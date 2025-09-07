@@ -1,0 +1,1884 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>الفارس العالمي - لوحة التحكم</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --primary-light: #34495e;
+      --secondary: #3498db;
+      --success: #2ecc71;
+      --warning: #f39c12;
+      --danger: #e74c3c;
+      --light: #ecf0f1;
+      --white: #ffffff;
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 8px 20px rgba(0, 0, 0, 0.15);
+      --transition: all 0.3s ease;
+      --border-radius: 12px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Cairo', sans-serif;
+    }
+
+    body {
+      background: #f8fafc;
+      color: #333;
+      min-height: 100vh;
+      direction: rtl;
+      font-size: 14px;
+      overflow-x: hidden;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--primary);
+      padding: 12px 20px;
+      color: white;
+      box-shadow: var(--shadow-md);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+    .user-info img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+    .logo {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo i {
+      font-size: 1.2rem;
+    }
+
+    /* Navigation */
+    nav.nav {
+      display: flex;
+      gap: 8px;
+      padding: 10px 15px;
+      background: var(--light);
+      border-bottom: 1px solid #dcdde1;
+      flex-wrap: wrap;
+    }
+    nav.nav a {
+      text-decoration: none;
+      color: var(--primary);
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 6px;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    nav.nav a:hover, nav.nav a.active {
+      background: var(--primary-light);
+      color: white;
+    }
+    nav.nav a i {
+      font-size: 1.1rem;
+    }
+
+    /* Dropdown */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      background: var(--white);
+      min-width: 240px;
+      box-shadow: var(--shadow-lg);
+      z-index: 1000;
+      border-radius: 8px;
+      overflow: hidden;
+      animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+    .dropdown-content a {
+      color: var(--primary);
+      padding: 10px 15px;
+      text-decoration: none;
+      display: block;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .dropdown-content a:hover {
+      background: var(--primary-light);
+      color: white;
+    }
+    .dropdown-divider {
+      height: 1px;
+      background: #ecf0f1;
+      margin: 8px 0;
+    }
+    .dropdown-content .submenu {
+      padding-right: 20px;
+      border-right: 2px solid var(--light);
+    }
+    .dropdown-content .submenu a {
+      color: var(--primary-light);
+      padding: 8px 15px;
+      font-size: 0.95rem;
+    }
+    .dropdown-content .submenu a:hover {
+      color: white;
+      background: var(--secondary);
+    }
+    .dropdown-content hr {
+      margin: 5px 0;
+      border: 0;
+      border-top: 1px solid #ecf0f1;
+    }
+
+    /* Main */
+    main {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 0 20px;
+    }
+    .page-title {
+      font-size: 1.8rem;
+      color: var(--primary);
+      margin-bottom: 25px;
+      text-align: right;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .page-title i {
+      font-size: 1.5rem;
+      color: var(--secondary);
+    }
+
+    /* Stats Cards */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 18px;
+      margin-bottom: 25px;
+    }
+    .stat-card {
+      padding: 18px 15px;
+      border-radius: var(--border-radius);
+      text-align: center;
+      box-shadow: var(--shadow-md);
+      cursor: pointer;
+      transition: var(--transition);
+      color: var(--white);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 140px;
+      position: relative;
+      overflow: hidden;
+    }
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+    }
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.3);
+    }
+    .stat-card:hover::before {
+      background: white;
+    }
+    .stat-card .stat-value {
+      font-size: 1.9rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .stat-card .stat-label {
+      font-size: 0.95rem;
+      margin-bottom: 8px;
+      opacity: 0.95;
+    }
+    .stat-card .stat-action {
+      font-size: 0.85rem;
+      text-decoration: none;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-top: 5px;
+      font-weight: 600;
+      opacity: 0.9;
+    }
+    .stat-card .stat-action:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+
+    /* Colors */
+    .clients-card { background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%); }
+    .approval-card { background: linear-gradient(135deg, #16a085 0%, #138a74 100%); }
+    .contracts-card { background: linear-gradient(135deg, #3498db 0%, #2573a7 100%); }
+    .late-contracts-card { background: linear-gradient(135deg, #f39c12 0%, #d6891d 100%); }
+    .cv-card { background: linear-gradient(135deg, #d35400 0%, #b94a00 100%); }
+    .warranty-card { background: linear-gradient(135deg, #2ecc71 0%, #239454 100%); }
+    .access-card { background: linear-gradient(135deg, #8e44ad 0%, #793a93 100%); }
+    .accommodation-card { background: linear-gradient(135deg, #1abc9c 0%, #16a085 100%); }
+    .accounting-card { background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%); }
+    .financial-reports-card { background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); }
+
+    /* Charts & Tables */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr; /* تغيير النسبة من 1fr 2fr إلى 1fr 1fr لجعل الرسمين بنفس الحجم */
+      gap: 25px; /* زيادة الفراغ بين الرسمين */
+      margin: 25px 0;
+    }
+    .chart-container {
+      background: var(--white);
+      border-radius: var(--border-radius);
+      padding: 25px; /* زيادة الحشوة لجعل الرسم أكبر */
+      box-shadow: var(--shadow-md);
+      height: 400px; /* تحديد ارتفاع ثابت للحاوية */
+      display: flex;
+      flex-direction: column;
+    }
+    .chart-title {
+      font-size: 1.1rem;
+      color: var(--primary);
+      margin-bottom: 15px;
+      text-align: right;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .chart-actions {
+      display: flex;
+      gap: 10px;
+    }
+    .chart-actions button {
+      background: var(--light);
+      border: none;
+      border-radius: 4px;
+      padding: 3px 8px;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+    canvas {
+      max-width: 100%;
+      height: 320px; /* زيادة الارتفاع من الافتراضي إلى 320 بكسل */
+      margin-top: auto; /* دفع الرسم لأسفل للحفاظ على مساحة متساوية */
+    }
+
+    /* Table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      background: var(--white);
+      box-shadow: var(--shadow-md);
+    }
+    th, td {
+      padding: 14px 16px;
+      text-align: right;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    th {
+      background: linear-gradient(to bottom, #f8fafc, #f1f5f9);
+      color: var(--primary);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    th:hover {
+      background: linear-gradient(to bottom, #f1f5f9, #e2e8f0);
+    }
+    tr:hover {
+      background: #f8fafc;
+    }
+    .sort-icon {
+      margin: 0 4px;
+      font-size: 0.8rem;
+      opacity: 0.6;
+    }
+
+    /* Confirmation Modal */
+    .confirmation-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .confirmation-content {
+      background: var(--white);
+      padding: 25px;
+      border-radius: 14px;
+      width: 420px;
+      text-align: center;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+    }
+    .confirmation-content h3 {
+      margin-bottom: 15px;
+      color: var(--danger);
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+    .confirmation-content p {
+      margin-bottom: 25px;
+      font-size: 1.1rem;
+      color: #555;
+    }
+    .confirmation-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+    .confirmation-buttons button {
+      padding: 10px 25px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      min-width: 120px;
+    }
+    .cancel-btn { background: #95a5a6; color: white; }
+    .confirm-btn { background: var(--danger); color: white; }
+    .confirmation-buttons button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: var(--success);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 1100;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: all 0.4s ease;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Form Overlay */
+    .form-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.35);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .form-container {
+      background: var(--white);
+      padding: 25px 30px;
+      border-radius: 14px;
+      max-width: 800px;
+      width: 90%;
+      text-align: right;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+    .form-container h2 {
+      margin-bottom: 20px;
+      color: var(--primary);
+      font-size: 1.6rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .form-container label {
+      display: block;
+      margin: 12px 0 6px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+    .form-container input,
+    .form-container select,
+    .form-container textarea {
+      width: 100%;
+      padding: 11px 14px;
+      margin-bottom: 16px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: #fafbfd;
+    }
+    .form-container button {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      background: var(--secondary);
+      color: var(--white);
+      box-shadow: 0 4px 6px rgba(52, 152, 219, 0.2);
+    }
+    .close-btn {
+      float: left;
+      cursor: pointer;
+      font-weight: 700;
+      color: #b2bec3;
+      font-size: 1.8rem;
+    }
+    .close-btn:hover {
+      color: var(--danger);
+    }
+
+    /* Form Sections */
+    .form-section {
+      margin-bottom: 25px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #eee;
+    }
+    .form-section h3 {
+      color: var(--primary);
+      margin-bottom: 15px;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+    }
+
+    /* File Upload */
+    .file-upload {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .file-upload input {
+      display: none;
+    }
+    .file-upload label {
+      background: var(--light);
+      padding: 10px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      margin: 0;
+    }
+    .file-name {
+      color: #718096;
+      font-size: 0.9rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 1100px) {
+      .charts-grid { 
+        grid-template-columns: 1fr; 
+        height: auto; /* إزالة الارتفاع الثابت للهاتف */
+      }
+      .chart-container {
+        height: auto;
+        min-height: 350px; /* ارتفاع افتراضي للهاتف */
+      }
+    }
+    @media (max-width: 768px) {
+      .stats-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="user-info">
+      <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User">
+      <span>موظف</span>
+    </div>
+    <div class="logo">
+      <i class="fas fa-shield-alt"></i> الفارس العالمي
+    </div>
+  </header>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <a href="index.html" class="active">
+      <i class="dripicons-home"></i> لوحة التحكم
+    </a>
+    
+    <div class="dropdown">
+      <a href="#">
+        <i class="dripicons-checklist"></i> اساسية 
+        <i class="mdi mdi-chevron-down mdi-drop"></i>
+      </a>
+      <div class="dropdown-content">
+        <a href="https://osesapp.com/afaq-co/role">الصلاحية</a>
+        <a href="https://osesapp.com/afaq-co/nationalitie">الجنسيات</a>
+        <a href="https://osesapp.com/afaq-co/airport">المطارات</a>
+        <a href="https://osesapp.com/afaq-co/offices">المكاتب</a>
+        <a href="https://osesapp.com/afaq-co/profession">المهنة</a>
+        <a href="https://osesapp.com/afaq-co/users">المستخدمين</a>
+        <a href="https://osesapp.com/afaq-co/status">الحالة</a>
+        <a href="https://osesapp.com/afaq-co/countrys">الدول</a>
+        <a href="https://osesapp.com/afaq-co/religion">الديانة</a>
+        <a href="https://osesapp.com/afaq-co/terms-and-advantage">الشروط والمزايا</a>
+        <a href="https://osesapp.com/afaq-co/qualifications-and-experience">المؤهلات والخبرة</a>
+        <a href="https://osesapp.com/afaq-co/marketer">المسوقين</a>
+        <a href="https://osesapp.com/afaq-co/accommodation-type">نوع الايواء</a>
+        <a href="https://osesapp.com/afaq-co/visa-type">نوع التأشيره</a>
+        <a href="https://osesapp.com/afaq-co/main-settings">الاعدادات</a>
+        <a href="https://osesapp.com/afaq-co/activity-log">سجلات نشاط البرنامج</a>
+      </div>
+    </div>
+    
+    <div class="dropdown">
+      <a href="#">
+        <i class="dripicons-meter"></i> الوصول السريع 
+        <i class="mdi mdi-chevron-down mdi-drop"></i>
+      </a>
+      <div class="dropdown-content">
+        <a href="https://osesapp.com/afaq-co/office-work/cv">السيرة الذاتية</a>
+        <a href="https://osesapp.com/afaq-co/office-work/customer">العملاء</a>
+        <a href="https://osesapp.com/afaq-co/office-work/contract-list">العقود</a>
+        <a href="https://osesapp.com/afaq-co/office-work/contract-list?underwarranty=U2VwMjAyNS1NZz09">
+          تحت الضمان
+        </a>
+        <a href="https://osesapp.com/afaq-co/office-work/contract-list?arrivals=U2VwMjAyNS1NZz09">
+          الوصول
+        </a>
+      </div>
+    </div>
+    
+    <div class="dropdown">
+      <a href="#">
+        <i class="dripicons-help"></i> الدعم 
+        <i class="mdi mdi-chevron-down mdi-drop"></i>
+      </a>
+      <div class="dropdown-content">
+        <a href="https://osesapp.com/afaq-co/support/my-ticket">الشكاوي الخاصة بي</a>
+        <a href="https://osesapp.com/afaq-co/support/ticket">الشكاوي</a>
+      </div>
+    </div>
+    
+    <a href="away.html">
+      <i class="dripicons-user-group"></i> الايواء
+    </a>
+    
+    <div class="dropdown">
+      <a href="#">
+        <i class="dripicons-wallet"></i> المحاسبة 
+        <i class="mdi mdi-chevron-down mdi-drop"></i>
+      </a>
+      <div class="dropdown-content">
+        <div class="submenu">
+          <a href="https://osesapp.com/afaq-co/sales/settlementRestrictions/create">اضافة سند قيد / تسويه</a>
+          <a href="https://osesapp.com/afaq-co/sales/settlementRestrictions">سندات القيد / التسويه</a>
+          <hr>
+          <a href="https://osesapp.com/afaq-co/sales/transactionsOut/create">اضافة سند صرف</a>
+          <a href="https://osesapp.com/afaq-co/sales/transactionsOut">سندات الصرف</a>
+          <hr>
+          <a href="https://osesapp.com/afaq-co/sales/transactionsIn/create">اضافة سند قبض</a>
+          <a href="https://osesapp.com/afaq-co/sales/transactionsIn">سندات القبض</a>
+          <hr>
+          <a href="https://osesapp.com/afaq-co/sales/accountingTree">شجرة الحسابات</a>
+          <a href="https://osesapp.com/afaq-co/sales/invoice">الفواتير</a>
+          <a href="https://osesapp.com/afaq-co/sales/finalAccounts">الحسابات الختامية</a>
+          <hr>
+          <a href="https://osesapp.com/afaq-co/accounting/cost-center">مراكز التكلفة</a>
+          <a href="https://osesapp.com/afaq-co/accounting/currency">العملات</a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="dropdown">
+      <a href="#">
+        <i class="dripicons-wallet"></i> التقارير الماليه 
+        <i class="mdi mdi-chevron-down mdi-drop"></i>
+      </a>
+      <div class="dropdown-content">
+        <div class="submenu">
+          <a href="https://osesapp.com/afaq-co/sales/accountStatement">كشف حساب</a>
+          <hr>
+          <a href="https://osesapp.com/afaq-co/sales/detailedFinancialRestrictions">القيود الماليه التفصيليه</a>
+          <hr>
+          <a href="https://osesapp.com/afaq-co/sales/profitsAndLosses">الارباح والخسائر</a>
+          <a href="https://osesapp.com/afaq-co/sales/generalBudget">الميزانيه العموميه</a>
+          <hr>
+          <a href="https://osesapp.com/afaq-co/sales/trialBalance">ميزان المراجعه</a>
+        </div>
+      </div>
+    </div>
+    
+    <a href="reports.html">
+      <i class="dripicons-document-remove"></i> التقارير
+    </a>
+    
+    <div class="dropdown">
+      <a href="#">
+        <i class="dripicons-network-3"></i> روابط خارجية 
+        <i class="mdi mdi-chevron-down mdi-drop"></i>
+      </a>
+      <div class="dropdown-content">
+        <a target="_blank" href="https://visa.mofa.gov.sa/Enjaz/GetMusanedVisaInformation">التفويض علي تاشيرة عمل (مساند)</a>
+        <a target="_blank" href="https://visa.mofa.gov.sa/Account/Login/CommercialChamber">التصديق علي التفاويض</a>
+        <a target="_blank" href="https://enjazit.com.sa/Enjaz/GetVisaInformation/Person">التفويض علي تاشيرة</a>
+        <a target="_blank" href="https://pros.musaned.com.sa/login">إدارة مكاتب الاستقدام</a>
+        <a target="_blank" href="https://www.riyadbank.com/ar/personal-banking/info-tools/iban-generator">الحصول علي الايبان</a>
+        <a target="_blank" href="https://www.date-convert.net/">تحويل التاريخ</a>
+      </div>
+    </div>
+    
+    <a href="#" onclick="toggleLanguage()">
+      <i class="fas fa-globe"></i> • English
+    </a>
+  </nav>
+
+  <!-- Main Content -->
+  <main>
+    <h1 class="page-title">
+      <i class="fas fa-tachometer-alt"></i> لوحة التحكم
+    </h1>
+
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+      <div class="stat-card clients-card" id="clients-card" onclick="openForm('client')">
+        <div class="stat-value">16</div>
+        <div class="stat-label">العملاء</div>
+        <div class="stat-action">إضافة عميل</div>
+      </div>
+      <div class="stat-card approval-card" id="approval-card">
+        <div class="stat-value">1</div>
+        <div class="stat-label">اعتماد العقود</div>
+        <div class="stat-action">✔️</div>
+      </div>
+      <div class="stat-card contracts-card" id="contracts-card" onclick="openForm('contract')">
+        <div class="stat-value">3</div>
+        <div class="stat-label">العقود</div>
+        <div class="stat-action">إضافة عقد جديد</div>
+      </div>
+      <div class="stat-card late-contracts-card" id="late-contracts-card">
+        <div class="stat-value">1</div>
+        <div class="stat-label">العقود المتأخرة</div>
+      </div>
+      <div class="stat-card cv-card" id="cv-card" onclick="openForm('cv')">
+        <div class="stat-value">2</div>
+        <div class="stat-label">السيرة الذاتية</div>
+        <div class="stat-action">إضافة سيرة ذاتية</div>
+      </div>
+      <div class="stat-card warranty-card" id="warranty-card" onclick="openForm('worker')">
+        <div class="stat-value">1</div>
+        <div class="stat-label">تحت الضمان</div>
+        <div class="stat-action">إضافة عامل</div>
+      </div>
+      <div class="stat-card access-card" id="access-card" onclick="openForm('worker')">
+        <div class="stat-value">0</div>
+        <div class="stat-label">الوصول</div>
+        <div class="stat-action">إضافة عامل</div>
+      </div>
+      <div class="stat-card accommodation-card" id="accommodation-card" onclick="openForm('accommodation')">
+        <div class="stat-value">1</div>
+        <div class="stat-label">الإيواء</div>
+        <div class="stat-action">إضافة عامل</div>
+      </div>
+      <div class="stat-card accounting-card">
+        <div class="stat-value">12</div>
+        <div class="stat-label">المحاسبة</div>
+        <div class="stat-action">عرض المحاسبة</div>
+      </div>
+      <div class="stat-card financial-reports-card">
+        <div class="stat-value">5</div>
+        <div class="stat-label">التقارير المالية</div>
+        <div class="stat-action">عرض التقارير</div>
+      </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="charts-grid">
+      <div class="chart-container">
+        <div class="chart-title">
+          إحصائيات العقود
+          <div class="chart-actions">
+            <button onclick="toggleChartType('contracts', 'bar')">شريط</button>
+            <button onclick="toggleChartType('contracts', 'pie')">دائري</button>
+          </div>
+        </div>
+        <canvas id="contractsChart"></canvas>
+      </div>
+      <div class="chart-container">
+        <div class="chart-title">
+          تقرير تواريخ العقود
+          <div class="chart-actions">
+            <button onclick="toggleChartType('dates', 'line')">خطي</button>
+            <button onclick="toggleChartType('dates', 'bar')">شريط</button>
+          </div>
+        </div>
+        <canvas id="datesChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Contracts Table -->
+    <h2>العقود الحالية</h2>
+    <table id="contractsTable">
+      <thead>
+        <tr>
+          <th onclick="sortTable(0)">اسم العميل <span class="sort-icon">⇅</span></th>
+          <th onclick="sortTable(1)">رقم العقد <span class="sort-icon">⇅</span></th>
+          <th onclick="sortTable(2)">الجنسية <span class="sort-icon">⇅</span></th>
+          <th onclick="sortTable(3)">المهنة <span class="sort-icon">⇅</span></th>
+          <th onclick="sortTable(4)">تاريخ العقد <span class="sort-icon">⇅</span></th>
+          <th onclick="sortTable(5)">مدة العقد <span class="sort-icon">⇅</span></th>
+          <th onclick="sortTable(6)">الإجراءات <span class="sort-icon">⇅</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>علي أحمد</td>
+          <td>CT-2024-001</td>
+          <td>السعودية</td>
+          <td>مُهندس</td>
+          <td>2024-01-15</td>
+          <td>2 سنة</td>
+          <td><button onclick="confirmDelete()">حذف</button></td>
+        </tr>
+        <tr>
+          <td>فهد محمد</td>
+          <td>CT-2024-002</td>
+          <td>الإمارات</td>
+          <td>عامل</td>
+          <td>2024-02-20</td>
+          <td>1 سنة</td>
+          <td><button onclick="confirmDelete()">حذف</button></td>
+        </tr>
+        <tr>
+          <td>خالد علي</td>
+          <td>000002</td>
+          <td>الفلبين</td>
+          <td>PONTILA PAMA HAIDELIZA</td>
+          <td>2024-01-15</td>
+          <td>2 سنة</td>
+          <td><button onclick="confirmDelete()">حذف</button></td>
+        </tr>
+        <tr>
+          <td>العنزي عبدالعزيز</td>
+          <td>000004</td>
+          <td>سعودى</td>
+          <td>-</td>
+          <td>2024-02-20</td>
+          <td>1 سنة</td>
+          <td><button onclick="confirmDelete()">حذف</button></td>
+        </tr>
+        <tr>
+          <td>ال عبدالله محمد</td>
+          <td>000003</td>
+          <td>اثيوبيا</td>
+          <td>MOHAMMED NEIMA SHIKUR</td>
+          <td>2024-03-10</td>
+          <td>2 سنة</td>
+          <td><button onclick="confirmDelete()">حذف</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
+
+  <!-- Confirmation Modal -->
+  <div class="confirmation-modal" id="confirmationModal">
+    <div class="confirmation-content">
+      <h3>هل أنت متأكد؟</h3>
+      <p>لن تستطيع التراجع عن التعديل لاحقا</p>
+      <div class="confirmation-buttons">
+        <button class="cancel-btn" onclick="hideConfirmation()">إلغاء</button>
+        <button class="confirm-btn" onclick="deleteItem()">نعم امسح هذا</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast">تم الحفظ بنجاح!</div>
+
+  <!-- Form Overlay -->
+  <div class="form-overlay" id="formOverlay">
+    <div class="form-container" id="formContainer">
+      <span class="close-btn" onclick="closeForm()">✖</span>
+      <div id="formContent"></div>
+    </div>
+  </div>
+
+  <script>
+    // Current chart types
+    let chartTypes = {
+      contracts: 'doughnut',
+      dates: 'line'
+    };
+
+    // 🍞 إظهار رسالة نجاح (Toast)
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // ❓ تأكيد الحذف
+    function confirmDelete() {
+      document.getElementById('confirmationModal').style.display = 'flex';
+    }
+    function hideConfirmation() {
+      document.getElementById('confirmationModal').style.display = 'none';
+    }
+    function deleteItem() {
+      hideConfirmation();
+      showToast("تم المسح");
+    }
+
+    // 🌍 تبديل اللغة
+    function toggleLanguage() {
+      const isArabic = document.documentElement.lang === 'ar';
+      const newLang = isArabic ? 'en' : 'ar';
+      
+      // تحديث لغة الصفحة
+      document.documentElement.lang = newLang;
+      
+      // تحديث النصوص
+      if (newLang === 'en') {
+        document.querySelector('.page-title').textContent = 'Dashboard';
+        document.querySelectorAll('th')[0].textContent = 'Client Name';
+        document.querySelectorAll('th')[1].textContent = 'Contract Number';
+        document.querySelectorAll('th')[2].textContent = 'Nationality';
+        document.querySelectorAll('th')[3].textContent = 'Profession';
+        document.querySelectorAll('th')[4].textContent = 'Contract Date';
+        document.querySelectorAll('th')[5].textContent = 'Duration';
+        document.querySelectorAll('th')[6].textContent = 'Actions';
+        
+        document.querySelector('.stat-label.clients-card').textContent = 'Clients';
+        document.querySelector('.stat-action.clients-card').textContent = 'Add Client';
+        document.querySelector('.stat-label.contracts-card').textContent = 'Contracts';
+        document.querySelector('.stat-action.contracts-card').textContent = 'Add Contract';
+        document.querySelector('.chart-title').textContent = 'Contract Statistics';
+        
+        // تحديث عناوين القوائم
+        document.querySelectorAll('.nav a')[0].textContent = 'Dashboard';
+        document.querySelectorAll('.nav a')[1].textContent = 'Basic';
+        document.querySelectorAll('.nav a')[2].textContent = 'Quick Access';
+        document.querySelectorAll('.nav a')[3].textContent = 'Support';
+        document.querySelectorAll('.nav a')[4].textContent = 'Accommodation';
+        document.querySelectorAll('.nav a')[5].textContent = 'Accounting';
+        document.querySelectorAll('.nav a')[6].textContent = 'Financial Reports';
+        document.querySelectorAll('.nav a')[7].textContent = 'Reports';
+        document.querySelectorAll('.nav a')[8].textContent = 'External Links';
+        
+        // تحديث أسماء الملفات
+        document.querySelectorAll('.file-name').forEach(file => {
+          if (file.textContent === 'لم يتم اختيار ملف') {
+            file.textContent = 'No file selected';
+          }
+        });
+      } else {
+        document.querySelector('.page-title').textContent = 'لوحة التحكم';
+        document.querySelectorAll('th')[0].textContent = 'اسم العميل';
+        document.querySelectorAll('th')[1].textContent = 'رقم العقد';
+        document.querySelectorAll('th')[2].textContent = 'الجنسية';
+        document.querySelectorAll('th')[3].textContent = 'المهنة';
+        document.querySelectorAll('th')[4].textContent = 'تاريخ العقد';
+        document.querySelectorAll('th')[5].textContent = 'مدة العقد';
+        document.querySelectorAll('th')[6].textContent = 'الإجراءات';
+        
+        document.querySelector('.stat-label.clients-card').textContent = 'العملاء';
+        document.querySelector('.stat-action.clients-card').textContent = 'إضافة عميل';
+        document.querySelector('.stat-label.contracts-card').textContent = 'العقود';
+        document.querySelector('.stat-action.contracts-card').textContent = 'إضافة عقد جديد';
+        document.querySelector('.chart-title').textContent = 'إحصائيات العقود';
+        
+        // تحديث عناوين القوائم
+        document.querySelectorAll('.nav a')[0].textContent = 'لوحة التحكم';
+        document.querySelectorAll('.nav a')[1].textContent = 'اساسية';
+        document.querySelectorAll('.nav a')[2].textContent = 'الوصول السريع';
+        document.querySelectorAll('.nav a')[3].textContent = 'الدعم';
+        document.querySelectorAll('.nav a')[4].textContent = 'الايواء';
+        document.querySelectorAll('.nav a')[5].textContent = 'المحاسبة';
+        document.querySelectorAll('.nav a')[6].textContent = 'التقارير الماليه';
+        document.querySelectorAll('.nav a')[7].textContent = 'التقارير';
+        document.querySelectorAll('.nav a')[8].textContent = 'روابط خارجية';
+        
+        // تحديث أسماء الملفات
+        document.querySelectorAll('.file-name').forEach(file => {
+          if (file.textContent === 'No file selected') {
+            file.textContent = 'لم يتم اختيار ملف';
+          }
+        });
+      }
+      
+      // تحديث زر اللغة
+      const langBtn = document.querySelector('a[href="#"][onclick*="toggleLanguage"]');
+      langBtn.innerHTML = newLang === 'en' ? '<i class="fas fa-globe"></i> • عربي' : '<i class="fas fa-globe"></i> • English';
+    }
+
+    // 📊 تغيير نوع الرسم البياني
+    function toggleChartType(chartId, type) {
+      chartTypes[chartId] = type;
+      renderCharts();
+    }
+
+    // 📊 رسم الرسوم البيانية
+    function renderCharts() {
+      // عقود الرسم البياني الدائري
+      const contractsCtx = document.getElementById('contractsChart').getContext('2d');
+      new Chart(contractsCtx, {
+        type: chartTypes.contracts,
+        data: {
+          labels: ['العقود', 'العقود المتأخرة', 'تحت الضمان', 'الوصول'],
+          datasets: [{
+            data: [3, 1, 1, 0],
+            backgroundColor: ['#3498db', '#f39c12', '#2ecc71', '#9b59b6'],
+            borderWidth: 1,
+            borderColor: '#fff',
+            cutout: chartTypes.contracts === 'doughnut' ? '60%' : '0%'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false, // مهم لجعل الرسم يملأ الحاوية
+          plugins: {
+            legend: { position: 'bottom' }
+          }
+        }
+      });
+
+      // الرسم البياني الخطي
+      const datesCtx = document.getElementById('datesChart').getContext('2d');
+      new Chart(datesCtx, {
+        type: chartTypes.dates,
+        data: {
+          labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو'],
+          datasets: [{
+            label: 'عدد العقود',
+            data: [1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7],
+            borderColor: '#3498db',
+            backgroundColor: chartTypes.dates === 'bar' ? 'rgba(52, 152, 219, 0.5)' : 'rgba(52, 152, 219, 0.1)',
+            tension: chartTypes.dates === 'line' ? 0.4 : 0,
+            fill: chartTypes.dates === 'line'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false, // مهم لجعل الرسم يملأ الحاوية
+          plugins: {
+            legend: { position: 'top' }
+          }
+        }
+      });
+    }
+
+    // 📋 ترتيب الجدول
+    let sortDirection = Array(7).fill(true);
+    function sortTable(column) {
+      const table = document.getElementById("contractsTable");
+      const tbody = table.tBodies[0];
+      const rows = Array.from(tbody.rows);
+      
+      // تغيير اتجاه الترتيب
+      sortDirection[column] = !sortDirection[column];
+      const direction = sortDirection[column] ? 1 : -1;
+      
+      // ترتيب الصفوف
+      rows.sort((a, b) => {
+        const aValue = a.cells[column].textContent;
+        const bValue = b.cells[column].textContent;
+        
+        // محاولة تحويل القيم إلى أرقام إذا كانت أرقامًا
+        const aNum = parseFloat(aValue.replace(/,/g, ''));
+        const bNum = parseFloat(bValue.replace(/,/g, ''));
+        
+        if (!isNaN(aNum) && !isNaN(bNum)) {
+          return (aNum - bNum) * direction;
+        }
+        
+        return aValue.localeCompare(bValue) * direction;
+      });
+      
+      // إعادة إضافة الصفوف المرتبة
+      rows.forEach(row => tbody.appendChild(row));
+    }
+
+    // 📝 فتح النموذج (إضافة عميل / عقد / سيرة)
+    function openForm(type) {
+      const formContent = document.getElementById('formContent');
+      formContent.innerHTML = '';
+
+      if (type === 'client') {
+        formContent.innerHTML = `
+          <h2>إضافة عميل</h2>
+          
+          <div class="form-section">
+            <h3>المعلومات الأساسية</h3>
+            <div class="form-row">
+              <div>
+                <label>الاسم</label>
+                <input type="text" id="clientName">
+              </div>
+              <div>
+                <label>رقم العميل</label>
+                <input type="text" id="clientID">
+              </div>
+            </div>
+            <div class="form-row">
+              <div>
+                <label>العنوان</label>
+                <input type="text" id="clientAddress">
+              </div>
+              <div>
+                <label>الجنسية</label>
+                <select id="clientNationality">
+                  <option>السعودية</option>
+                  <option>الكويت</option>
+                  <option>مصر</option>
+                  <option>الأردن</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-section">
+            <h3>المعلومات الشخصية</h3>
+            <div class="form-row">
+              <div>
+                <label>رقم الهوية</label>
+                <input type="text" id="clientIDNumber">
+              </div>
+              <div>
+                <label>رقم الجوال</label>
+                <input type="text" id="clientPhone">
+              </div>
+            </div>
+            <div class="form-row">
+              <div>
+                <label>مكان العمل</label>
+                <input type="text" id="clientWorkplace">
+              </div>
+              <div>
+                <label>تاريخ الميلاد</label>
+                <input type="date" id="clientBirth">
+              </div>
+            </div>
+          </div>
+          
+          <button onclick="addClient()">إضافة عميل</button>
+        `;
+      } else if (type === 'contract') {
+        formContent.innerHTML = `
+          <h2>عقد التوظيف</h2>
+          
+          <div class="form-section">
+            <h3>المعلومات الأساسية</h3>
+            <div class="form-row">
+              <div>
+                <label>العميل</label>
+                <select id="contractClient">
+                  <option>اختر عميل</option>
+                  <option>علي أحمد</option>
+                  <option>فهد محمد</option>
+                </select>
+              </div>
+              <div>
+                <label>رقم العقد</label>
+                <input type="text" id="contractNumber" value="000005" readonly>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div>
+                <label>الجنسية</label>
+                <select id="contractNationality">
+                  <option>اختر الجنسية</option>
+                  <option>الفلبين</option>
+                  <option>إثيوبيا</option>
+                  <option>السعودية</option>
+                </select>
+              </div>
+              <div>
+                <label>السيرة الذاتية</label>
+                <select id="contractCV">
+                  <option>اختر السيرة الذاتية</option>
+                  <option>سيرة ذاتية 1</option>
+                  <option>سيرة ذاتية 2</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div>
+                <label>تاريخ العقد</label>
+                <input type="date" id="contractDate">
+              </div>
+              <div>
+                <label>مدة العقد</label>
+                <input type="text" id="contractDuration">
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-section">
+            <h3>تفاصيل التأشيرة</h3>
+            <div class="form-row">
+              <div>
+                <label>نوع التأشيرة</label>
+                <select id="visaType">
+                  <option>نوع التأشيرة</option>
+                  <option>عمل</option>
+                  <option>زيارة</option>
+                </select>
+              </div>
+              <div>
+                <label>رقم التأشيرة</label>
+                <input type="text" id="visaNumber">
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div>
+                <label>رقم العقد في مساند</label>
+                <input type="text" id="musanedContractNumber">
+              </div>
+              <div>
+                <label>رقم جواز السفر</label>
+                <input type="text" id="passportNumber">
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-section">
+            <h3>المرشحون</h3>
+            <div class="form-row">
+              <div>
+                <label>عدد المرشحون</label>
+                <input type="number" id="candidatesCount" min="1" value="1">
+              </div>
+              <div>
+                <label>العمر</label>
+                <input type="number" id="candidateAge" min="18" max="60">
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div>
+                <label>الديانة</label>
+                <select id="candidateReligion">
+                  <option>اختر الديانة</option>
+                  <option>مسلم</option>
+                  <option>مسيحي</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-section">
+            <h3>التكاليف</h3>
+            <div class="form-row">
+              <div>
+                <label>تكاليف الاستقدام المباشره</label>
+                <input type="number" id="directRecruitmentCost" min="0" value="0">
+              </div>
+              <div>
+                <label>تكاليف التأمين</label>
+                <input type="number" id="insuranceCost" min="0" value="0">
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div>
+                <label>تكاليف الاستقدام الخارجيه</label>
+                <input type="number" id="externalRecruitmentCost" min="0" value="0">
+              </div>
+              <div>
+                <label>تكاليف حكومية</label>
+                <input type="number" id="governmentCost" min="0" value="0">
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div>
+                <label>تكاليف بنكيه</label>
+                <input type="number" id="bankCost" min="0" value="0">
+              </div>
+              <div>
+                <label>الضريبه %</label>
+                <input type="number" id="taxPercentage" min="0" max="100" value="15">
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div>
+                <label>اجمالي التكلفه</label>
+                <input type="number" id="totalCost" min="0" value="0" readonly>
+              </div>
+              <div>
+                <label>تاريخ التأشيرة</label>
+                <input type="date" id="visaDate">
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-section">
+            <h3>المصادر والمكاتب</h3>
+            <div class="form-row">
+              <div>
+                <label>مكتب خارجي</label>
+                <select id="externalOffice">
+                  <option>اختر المكتب</option>
+                  <option>PACIFIC STAR INTERNATIONAL</option>
+                  <option>ILEL LIQA FOREIGN AGENCY</option>
+                </select>
+              </div>
+              <div>
+                <label>مكتب داخلي</label>
+                <select id="internalOffice">
+                  <option>اختار المكتب الداخلي</option>
+                  <option>الفرع الرئيسي</option>
+                  <option>فرع جدة</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div>
+                <label>مصدر العقد</label>
+                <select id="contractSource">
+                  <option>حدد مصدر العقد</option>
+                  <option>مساند</option>
+                  <option>مكتب خاص</option>
+                </select>
+              </div>
+              <div>
+                <label>المهنة</label>
+                <select id="profession">
+                  <option>اختر المهنة</option>
+                  <option>مُهندس</option>
+                  <option>عامل</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-section">
+            <h3>التفاصيل الإضافية</h3>
+            <div class="form-row">
+              <div>
+                <label>مكان الوصول</label>
+                <input type="text" id="arrivalLocation">
+              </div>
+              <div>
+                <label>الراتب الشهري</label>
+                <input type="number" id="monthlySalary" min="0">
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div>
+                <label>مطار الوصول</label>
+                <select id="arrivalAirport">
+                  <option>اختر المطار</option>
+                  <option>مطار الملك خالد</option>
+                  <option>مطار الملك عبدالعزيز</option>
+                </select>
+              </div>
+              <div></div>
+            </div>
+            
+            <div class="form-row">
+              <div>
+                <label>الشروط والمزايا</label>
+                <select id="termsAndBenefits">
+                  <option>حدد الشروط والمزايا</option>
+                  <option>سكن</option>
+                  <option>مواصلات</option>
+                </select>
+              </div>
+              <div>
+                <label>المؤهلات والخبرة</label>
+                <select id="qualifications">
+                  <option>حدد المؤهلات والخبرة</option>
+                  <option>دبلوم</option>
+                  <option>جامعة</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div>
+                <label>مركز التكلفة</label>
+                <select id="costCenter">
+                  <option>حدد مركز التكلفة</option>
+                  <option>مركز 1</option>
+                  <option>مركز 2</option>
+                </select>
+              </div>
+              <div>
+                <label>المسوق</label>
+                <select id="marketer">
+                  <option>اختر المسوق</option>
+                  <option>مسوق 1</option>
+                  <option>مسوق 2</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div>
+                <label>أجرة المسوق</label>
+                <input type="number" id="marketerFee" min="0">
+              </div>
+              <div>
+                <label>تاريخ الوصول</label>
+                <input type="date" id="arrivalDate">
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div>
+                <label>وقت الوصول</label>
+                <input type="time" id="arrivalTime">
+              </div>
+              <div>
+                <label>شركه الطيران - رقم الرحله</label>
+                <input type="text" id="flightNumber">
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div>
+                <label>ملاحظات</label>
+                <textarea id="contractNotes" rows="3"></textarea>
+              </div>
+            </div>
+          </div>
+          
+          <button onclick="addContract()">إضافة عقد</button>
+        `;
+      } else if (type === 'cv') {
+        formContent.innerHTML = `
+          <h2>إضافة سيرة ذاتية</h2>
+          
+          <div class="form-section">
+            <h3>المعلومات الأساسية</h3>
+            <div class="form-row">
+              <div>
+                <label>الاسم</label>
+                <input type="text" id="cvName">
+              </div>
+              <div>
+                <label>المهنة</label>
+                <select id="cvProfession">
+                  <option>اختر المهنة</option>
+                  <option>مُهندس</option>
+                  <option>عامل</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div>
+                <label>الجنسية</label>
+                <select id="cvNationality">
+                  <option>اختر الجنسية</option>
+                  <option>الفلبين</option>
+                  <option>إثيوبيا</option>
+                </select>
+              </div>
+              <div>
+                <label>الديانة</label>
+                <select id="cvReligion">
+                  <option>اختر الديانة</option>
+                  <option>مسلم</option>
+                  <option>مسيحي</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div>
+                <label>العمر</label>
+                <input type="number" id="cvAge" min="18" max="60">
+              </div>
+              <div>
+                <label>الخبرة السابقة</label>
+                <select id="cvExperience">
+                  <option>اختر الخبرة السابقة</option>
+                  <option>1 سنة</option>
+                  <option>3 سنوات</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-section">
+            <h3>المعلومات الإضافية</h3>
+            <div class="form-row">
+              <div>
+                <label>مكتب</label>
+                <select id="cvOffice">
+                  <option>اختر المكتب</option>
+                  <option>PACIFIC STAR INTERNATIONAL</option>
+                  <option>ILEL LIQA FOREIGN AGENCY</option>
+                </select>
+              </div>
+              <div>
+                <label>رقم جواز السفر</label>
+                <input type="text" id="cvPassportNumber">
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div>
+                <label>ملاحظات</label>
+                <textarea id="cvNotes" rows="3"></textarea>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div>
+                <label>الحالة</label>
+                <select id="cvStatus">
+                  <option>اختر الحالة</option>
+                  <option>متوفر</option>
+                  <option>مستخدم</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div>
+                <label>صورة الملف</label>
+                <div class="file-upload">
+                  <input type="file" id="cvFile">
+                  <label for="cvFile">اختر ملف</label>
+                  <span class="file-name">لم يتم اختيار ملف</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <button onclick="addCV()">إضافة سيرة ذاتية</button>
+        `;
+      } else if (type === 'accommodation' || type === 'worker') {
+        formContent.innerHTML = `
+          <h2>إضافة عامل</h2>
+          
+          <div class="form-section">
+            <h3>المعلومات الأساسية</h3>
+            <div class="form-row">
+              <div>
+                <label>الاسم</label>
+                <input type="text" id="workerName">
+              </div>
+              <div>
+                <label>اسم الكفيل</label>
+                <input type="text" id="sponsorName">
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div>
+                <label>الجنسية</label>
+                <select id="workerNationality">
+                  <option>الجنسية</option>
+                  <option>الفلبين</option>
+                  <option>إثيوبيا</option>
+                </select>
+              </div>
+              <div>
+                <label>رقم الحدود</label>
+                <input type="text" id="borderNumber">
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div>
+                <label>رقم الاقامه</label>
+                <input type="text" id="residenceNumber">
+              </div>
+              <div>
+                <label>المهنة</label>
+                <select id="workerProfession">
+                  <option>المهنة</option>
+                  <option>مُهندس</option>
+                  <option>عامل</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div>
+                <label>العمر</label>
+                <input type="number" id="workerAge" min="18" max="60">
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-section">
+            <h3>التواريخ</h3>
+            <div class="form-row">
+              <div>
+                <label>تاريخ الدخول للمملكه</label>
+                <input type="date" id="kingdomEntryDate">
+              </div>
+              <div>
+                <label>تاريخ دخول العامله المكتب</label>
+                <input type="date" id="officeEntryDate">
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div>
+                <label>رقم جواز السفر</label>
+                <input type="text" id="workerPassportNumber">
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-section">
+            <h3>المعلومات الإضافية</h3>
+            <div class="form-row">
+              <div>
+                <label>مكتب</label>
+                <select id="workerOffice">
+                  <option>مكتب</option>
+                  <option>PACIFIC STAR INTERNATIONAL</option>
+                  <option>ILEL LIQA FOREIGN AGENCY</option>
+                </select>
+              </div>
+              <div>
+                <label>نوع الايواء</label>
+                <select id="accommodationType">
+                  <option>نوع الايواء</option>
+                  <option>نوع 1</option>
+                  <option>نوع 2</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div>
+                <label>الديانة</label>
+                <select id="workerReligion">
+                  <option>الديانة</option>
+                  <option>مسلم</option>
+                  <option>مسيحي</option>
+                </select>
+              </div>
+              <div>
+                <label>الخبرات السابقه</label>
+                <select id="workerExperience">
+                  <option>الخبرات السابقه</option>
+                  <option>1 سنة</option>
+                  <option>3 سنوات</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div>
+                <label>صورة الجواز</label>
+                <div class="file-upload">
+                  <input type="file" id="passportFile">
+                  <label for="passportFile">اختر ملف</label>
+                  <span class="file-name">لم يتم اختيار ملف</span>
+                </div>
+              </div>
+              <div>
+                <label>مرفقات اخري</label>
+                <div class="file-upload">
+                  <input type="file" id="otherAttachments">
+                  <label for="otherAttachments">اختر ملف</label>
+                  <span class="file-name">لم يتم اختيار ملف</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div>
+                <label>ملاحظات</label>
+                <textarea id="workerNotes" rows="3"></textarea>
+              </div>
+            </div>
+          </div>
+          
+          <button onclick="addWorker()">إضافة عامل</button>
+        `;
+      }
+
+      document.getElementById('formOverlay').style.display = 'flex';
+      
+      // تحديث أسماء الملفات عند التحميل
+      document.querySelectorAll('.file-upload input').forEach(input => {
+        input.addEventListener('change', function() {
+          const fileName = this.files[0] ? this.files[0].name : 'لم يتم اختيار ملف';
+          this.nextElementSibling.nextElementSibling.textContent = fileName;
+        });
+      });
+    }
+
+    // ✅ إغلاق النموذج
+    function closeForm() {
+      document.getElementById('formOverlay').style.display = 'none';
+    }
+
+    // 💾 حفظ العميل
+    function addClient() {
+      const name = document.getElementById('clientName').value;
+      const id = document.getElementById('clientID').value;
+
+      if (!name || !id) {
+        alert("الرجاء تعبئة الحقول المطلوبة");
+        return;
+      }
+
+      let clients = JSON.parse(localStorage.getItem('clients')) || [];
+      clients.push({ 
+        name, 
+        id, 
+        address: document.getElementById('clientAddress').value,
+        nationality: document.getElementById('clientNationality').value,
+        idNumber: document.getElementById('clientIDNumber').value,
+        phone: document.getElementById('clientPhone').value,
+        workplace: document.getElementById('clientWorkplace').value,
+        birth: document.getElementById('clientBirth').value,
+        date: new Date().toISOString()
+      });
+      localStorage.setItem('clients', JSON.stringify(clients));
+
+      // تحديث العداد
+      updateStats();
+      
+      closeForm();
+      showToast("تم إضافة العميل");
+    }
+
+    // 💾 حفظ العقد
+    function addContract() {
+      const client = document.getElementById('contractClient').value;
+      const number = document.getElementById('contractNumber').value;
+      const nationality = document.getElementById('contractNationality').value;
+      const cv = document.getElementById('contractCV').value;
+      
+      if (!client || !number) {
+        alert("الرجاء تعبئة الحقول المطلوبة");
+        return;
+      }
+
+      let contracts = JSON.parse(localStorage.getItem('contracts')) || [];
+      contracts.push({
+        client,
+        number,
+        nationality,
+        cv,
+        date: document.getElementById('contractDate').value,
+        duration: document.getElementById('contractDuration').value,
+        visaType: document.getElementById('visaType').value,
+        visaNumber: document.getElementById('visaNumber').value,
+        musanedContractNumber: document.getElementById('musanedContractNumber').value,
+        passportNumber: document.getElementById('passportNumber').value,
+        candidatesCount: document.getElementById('candidatesCount').value,
+        candidateAge: document.getElementById('candidateAge').value,
+        candidateReligion: document.getElementById('candidateReligion').value,
+        directRecruitmentCost: document.getElementById('directRecruitmentCost').value,
+        insuranceCost: document.getElementById('insuranceCost').value,
+        externalRecruitmentCost: document.getElementById('externalRecruitmentCost').value,
+        governmentCost: document.getElementById('governmentCost').value,
+        bankCost: document.getElementById('bankCost').value,
+        taxPercentage: document.getElementById('taxPercentage').value,
+        totalCost: document.getElementById('totalCost').value,
+        visaDate: document.getElementById('visaDate').value,
+        externalOffice: document.getElementById('externalOffice').value,
+        internalOffice: document.getElementById('internalOffice').value,
+        contractSource: document.getElementById('contractSource').value,
+        profession: document.getElementById('profession').value,
+        arrivalLocation: document.getElementById('arrivalLocation').value,
+        monthlySalary: document.getElementById('monthlySalary').value,
+        arrivalAirport: document.getElementById('arrivalAirport').value,
+        termsAndBenefits: document.getElementById('termsAndBenefits').value,
+        qualifications: document.getElementById('qualifications').value,
+        costCenter: document.getElementById('costCenter').value,
+        marketer: document.getElementById('marketer').value,
+        marketerFee: document.getElementById('marketerFee').value,
+        arrivalDate: document.getElementById('arrivalDate').value,
+        arrivalTime: document.getElementById('arrivalTime').value,
+        flightNumber: document.getElementById('flightNumber').value,
+        contractNotes: document.getElementById('contractNotes').value
+      });
+      localStorage.setItem('contracts', JSON.stringify(contracts));
+
+      // تحديث العداد
+      updateStats();
+      
+      // تحديث الجدول
+      loadContractsTable();
+      
+      closeForm();
+      showToast("تم إضافة العقد");
+    }
+
+    // 💾 حفظ السيرة الذاتية
+    function addCV() {
+      const name = document.getElementById('cvName').value;
+      const profession = document.getElementById('cvProfession').value;
+      
+      if (!name || !profession) {
+        alert("الرجاء تعبئة الحقول المطلوبة");
+        return;
+      }
+
+      let cvs = JSON.parse(localStorage.getItem('cvs')) || [];
+      cvs.push({
+        name,
+        profession,
+        nationality: document.getElementById('cvNationality').value,
+        religion: document.getElementById('cvReligion').value,
+        age: document.getElementById('cvAge').value,
+        experience: document.getElementById('cvExperience').value,
+        office: document.getElementById('cvOffice').value,
+        passportNumber: document.getElementById('cvPassportNumber').value,
+        notes: document.getElementById('cvNotes').value,
+        status: document.getElementById('cvStatus').value,
+        file: document.querySelector('.file-name').textContent
+      });
+      localStorage.setItem('cvs', JSON.stringify(cvs));
+
+      // تحديث العداد
+      updateStats();
+      
+      closeForm();
+      showToast("تم إضافة السيرة الذاتية");
+    }
+
+    // 💾 حفظ العامل
+    function addWorker() {
+      const name = document.getElementById('workerName').value;
+      const sponsor = document.getElementById('sponsorName').value;
+      
+      if (!name) {
+        alert("الرجاء تعبئة الحقول المطلوبة");
+        return;
+      }
+
+      let workers = JSON.parse(localStorage.getItem('workers')) || [];
+      workers.push({
+        name,
+        sponsor,
+        nationality: document.getElementById('workerNationality').value,
+        borderNumber: document.getElementById('borderNumber').value,
+        residenceNumber: document.getElementById('residenceNumber').value,
+        profession: document.getElementById('workerProfession').value,
+        age: document.getElementById('workerAge').value,
+        kingdomEntryDate: document.getElementById('kingdomEntryDate').value,
+        officeEntryDate: document.getElementById('officeEntryDate').value,
+        passportNumber: document.getElementById('workerPassportNumber').value,
+        office: document.getElementById('workerOffice').value,
+        accommodationType: document.getElementById('accommodationType').value,
+        religion: document.getElementById('workerReligion').value,
+        experience: document.getElementById('workerExperience').value,
+        passportFile: document.querySelectorAll('.file-name')[0].textContent,
+        otherAttachments: document.querySelectorAll('.file-name')[1].textContent,
+        notes: document.getElementById('workerNotes').value
+      });
+      localStorage.setItem('workers', JSON.stringify(workers));
+
+      // تحديث العداد
+      updateStats();
+      
+      closeForm();
+      showToast("تم إضافة العامل");
+    }
+
+    // 📊 تحديث إحصائيات البطاقات
+    function updateStats() {
+      const clients = JSON.parse(localStorage.getItem('clients')) || [];
+      const contracts = JSON.parse(localStorage.getItem('contracts')) || [];
+      const cvs = JSON.parse(localStorage.getItem('cvs')) || [];
+      const workers = JSON.parse(localStorage.getItem('workers')) || [];
+      
+      document.querySelector('#clients-card .stat-value').textContent = clients.length;
+      document.querySelector('#contracts-card .stat-value').textContent = contracts.length;
+      document.querySelector('#cv-card .stat-value').textContent = cvs.length;
+      document.querySelector('#warranty-card .stat-value').textContent = workers.length;
+      document.querySelector('#access-card .stat-value').textContent = workers.length;
+      document.querySelector('#accommodation-card .stat-value').textContent = workers.length;
+    }
+
+    // 📋 تحميل جدول العقود
+    function loadContractsTable() {
+      const contracts = JSON.parse(localStorage.getItem('contracts')) || [];
+      const tableBody = document.querySelector('#contractsTable tbody');
+      tableBody.innerHTML = '';
+      
+      contracts.forEach(contract => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${contract.client}</td>
+          <td>${contract.number}</td>
+          <td>${contract.nationality}</td>
+          <td>${contract.profession}</td>
+          <td>${contract.date}</td>
+          <td>${contract.duration}</td>
+          <td><button onclick="confirmDelete()">حذف</button></td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    // 🚀 عند تحميل الصفحة
+    document.addEventListener("DOMContentLoaded", function () {
+      updateStats();
+      loadContractsTable();
+      renderCharts();
+    });
+  </script>
+</body>
+</html>

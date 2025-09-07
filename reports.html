@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>التقارير - الفارس العالمي</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --primary-light: #34495e;
+      --secondary: #3498db;
+      --success: #2ecc71;
+      --warning: #f39c12;
+      --danger: #e74c3c;
+      --light: #ecf0f1;
+      --white: #ffffff;
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 8px 20px rgba(0, 0, 0, 0.15);
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Cairo', sans-serif;
+    }
+
+    body {
+      background: #f8fafc;
+      color: #333;
+      min-height: 100vh;
+      direction: rtl;
+      font-size: 14px;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--primary);
+      padding: 12px 20px;
+      color: white;
+      box-shadow: var(--shadow-md);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .user-info img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+    .logo {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: white;
+    }
+
+    /* Navigation */
+    nav.nav {
+      display: flex;
+      gap: 8px;
+      padding: 10px 15px;
+      background: var(--light);
+      border-bottom: 1px solid #dcdde1;
+      flex-wrap: wrap;
+    }
+    nav.nav a {
+      text-decoration: none;
+      color: var(--primary);
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 6px;
+      transition: var(--transition);
+    }
+    nav.nav a:hover, nav.nav a.active {
+      background: var(--primary-light);
+      color: white;
+    }
+
+    /* Main */
+    main {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 0 20px;
+    }
+    .page-title {
+      font-size: 1.8rem;
+      color: var(--primary);
+      margin-bottom: 25px;
+      text-align: right;
+      font-weight: 700;
+    }
+
+    /* Search Form */
+    .search-form {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: var(--shadow-md);
+      margin-bottom: 30px;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+    .form-row label {
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 5px;
+    }
+    .form-row select, .form-row input {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      width: 100%;
+      background: #fafbfd;
+    }
+    .btn-search {
+      background: var(--secondary);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-search:hover {
+      background: #2980b9;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(52, 152, 219, 0.2);
+    }
+    .btn-print {
+      background: var(--success);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-print:hover {
+      background: #27ae60;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(46, 204, 113, 0.2);
+    }
+    .btn-print .spinner {
+      display: none;
+      width: 16px;
+      height: 16px;
+      border: 2px solid white;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    .btn-print.loading .spinner {
+      display: inline-block;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: white;
+      box-shadow: var(--shadow-md);
+    }
+    th, td {
+      padding: 14px 16px;
+      text-align: right;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    th {
+      background: linear-gradient(to bottom, #f8fafc, #f1f5f9);
+      color: var(--primary);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    th:hover {
+      background: linear-gradient(to bottom, #f1f5f9, #e2e8f0);
+    }
+    tr:hover {
+      background: #f8fafc;
+    }
+    .sort-icon {
+      margin: 0 4px;
+      font-size: 0.8rem;
+      opacity: 0.6;
+    }
+
+    /* Pagination */
+    .pagination {
+      text-align: center;
+      margin: 25px 0;
+      color: #555;
+      font-size: 0.95rem;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .pagination-btn {
+      padding: 6px 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .pagination-btn.active, .pagination-btn:hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+    .entries {
+      margin-bottom: 15px;
+      text-align: right;
+      color: #555;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .entries select {
+      padding: 5px 10px;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: #718096;
+    }
+    .empty-state img {
+      width: 120px;
+      margin-bottom: 15px;
+      opacity: 0.6;
+    }
+    .empty-state h3 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: var(--success);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 1100;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: all 0.4s ease;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Print Styles */
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      .print-section, .print-section * {
+        visibility: visible;
+      }
+      .print-section {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        padding: 20px;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .table-container {
+        box-shadow: none;
+        border: 1px solid #ddd;
+      }
+      table {
+        page-break-inside: auto;
+      }
+      tr {
+        page-break-inside: avoid;
+        page-break-after: auto;
+      }
+      th, td {
+        border: 1px solid #ddd !important;
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      th, td {
+        padding: 12px 10px;
+        font-size: 0.9rem;
+      }
+      .entries {
+        flex-direction: column;
+        align-items: flex-end;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="user-info">
+      <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User">
+      <span>موظف</span>
+    </div>
+    <div class="logo">الفارس العالمي</div>
+  </header>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <a href="index.html">لوحة التحكم</a>
+    <a href="#" class="active">التقارير</a>
+    <a href="accounting.html">المحاسبة</a>
+    <a href="financial-reports.html">التقارير المالية</a>
+    <a href="external-links.html">روابط خارجية</a>
+    <a href="#" onclick="toggleLanguage()">• English</a>
+  </nav>
+
+  <!-- Main Content -->
+  <main>
+    <h1 class="page-title">التقارير</h1>
+
+    <!-- Search Form -->
+    <div class="search-form">
+      <h3 style="text-align: right; margin-bottom: 15px;">تقرير العقود</h3>
+      <div class="form-row">
+        <div>
+          <label>من تاريخ</label>
+          <input type="date" id="fromDate">
+        </div>
+        <div>
+          <label>إلى تاريخ</label>
+          <input type="date" id="toDate">
+        </div>
+        <div>
+          <label>الجنسية</label>
+          <select id="nationality">
+            <option>اختر الجنسية</option>
+            <option>السعودية</option>
+            <option>الفلبين</option>
+            <option>إثيوبيا</option>
+            <option>مصر</option>
+            <option>الأردن</option>
+          </select>
+        </div>
+        <div>
+          <label>مكتب خارجي</label>
+          <select id="externalOffice">
+            <option>اختار مكتب خارجي</option>
+            <option>‏PACIFIC STAR INTERNATIONAL</option>
+            <option>ILEL LIQA FOREIGN AGENCY</option>
+            <option>AL MADINA COMPANY</option>
+          </select>
+        </div>
+        <div>
+          <label>مكتب داخلي</label>
+          <select id="internalOffice">
+            <option>اختار المكتب الداخلي</option>
+            <option>الفرع الرئيسي</option>
+            <option>فرع جدة</option>
+          </select>
+        </div>
+        <div>
+          <label>مصدر العقد</label>
+          <select id="contractSource">
+            <option>حدد مصدر العقد</option>
+            <option>مساند</option>
+            <option>مكتب خاص</option>
+          </select>
+        </div>
+      </div>
+      <div style="display: flex; gap: 15px; margin-top: 15px;">
+        <button class="btn-search" id="searchBtn">بحث</button>
+        <button class="btn-print" id="printBtn" onclick="printSummary()">طباعة</button>
+      </div>
+    </div>
+
+    <!-- Entries -->
+    <div class="entries">
+      أظهر 
+      <select id="entriesSelect">
+        <option value="10" selected>10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+      </select> 
+      مدخلات
+      <input type="text" id="searchInput" placeholder="بحث في الجدول..." style="padding: 8px; border: 1px solid #ddd; border-radius: 6px; margin-right: 10px;">
+    </div>
+
+    <!-- Contracts Table -->
+    <table id="contractsTable">
+      <thead>
+        <tr>
+          <th onclick="sortTable(0)">اسم العميل <span class="sort-icon">⇅</span></th>
+          <th onclick="sortTable(1)">رقم العقد <span class="sort-icon">⇅</span></th>
+          <th onclick="sortTable(2)">تاريخ العقد <span class="sort-icon">⇅</span></th>
+          <th onclick="sortTable(3)">الجنسية <span class="sort-icon">⇅</span></th>
+          <th onclick="sortTable(4)">رقم التأشيرة <span class="sort-icon">⇅</span></th>
+          <th onclick="sortTable(5)">رقم الهويه <span class="sort-icon">⇅</span></th>
+          <th onclick="sortTable(6)">اسم المرشح <span class="sort-icon">⇅</span></th>
+          <th onclick="sortTable(7)">مكتب خارجي <span class="sort-icon">⇅</span></th>
+          <th onclick="sortTable(8)">مصدر العقد <span class="sort-icon">⇅</span></th>
+          <th onclick="sortTable(9)">اجراءات داخليه <span class="sort-icon">⇅</span></th>
+          <th onclick="sortTable(10)">اجراءات خارجيه <span class="sort-icon">⇅</span></th>
+          <th onclick="sortTable(11)">اعتماد <span class="sort-icon">⇅</span></th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        <!-- Will be populated dynamically -->
+      </tbody>
+    </table>
+
+    <!-- Empty State -->
+    <div class="empty-state" id="emptyState" style="display: none;">
+      <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjAwIDIwMCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iI2ZmZiIvPjxjaXJjbGUgY3g9IjEwMCIgY3k9IjUwIiByPSIzNSIgZmlsbD0iI2UzZTNlMyIvPjxwYXRoIGQ9Ik0xMDAgMTUwQzg0LjQgMTUwIDcxIDExOS42IDcxIDgwIDcxIDQwLjQgODQuNCAxMCAxMDAgMTAgMTAwIDEwIDExNiAxMCAxMjkgNDAuNCAxMjkgODAgMTI5IDExOS42IDExNS42IDE1MCAxMDAgMTUweiIgZmlsbD0iI2UzZTNlMyIvPjxjaXJjbGUgY3g9IjEwMCIgY3k9IjgwIiByPSIyMCIgZmlsbD0iI2QzZDNkMyIvPjxjaXJjbGUgY3g9IjEwMCIgY3k9IjgwIiByPSI5IiBmaWxsPSIjZjNmM2YzIi8+PC9zdmc+" alt="No results">
+      <h3>لا توجد نتائج مطابقة لبحثك</h3>
+      <p>جرب تعديل المعايير وحاول مرة أخرى</p>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination" id="pagination">
+      <button class="pagination-btn" data-page="prev">السابق</button>
+      <button class="pagination-btn active" data-page="1">1</button>
+      <button class="pagination-btn" data-page="2">2</button>
+      <button class="pagination-btn" data-page="3">3</button>
+      <button class="pagination-btn" data-page="next">التالي</button>
+    </div>
+  </main>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast">تم البحث بنجاح!</div>
+
+  <!-- Print Section (Hidden) -->
+  <div class="print-section" style="display: none;">
+    <div class="print-header">
+      <h1 style="text-align: center; color: #2c3e50; margin-bottom: 10px;">الفارس العالمي</h1>
+      <h2 style="text-align: center; color: #3498db; margin-bottom: 30px;">تقرير موجز للعقود</h2>
+      <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+        <div>التاريخ: <span id="printDate"></span></div>
+        <div>الفترة: <span id="printPeriod"></span></div>
+      </div>
+    </div>
+    <div id="printTableContainer">
+      <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+        <thead>
+          <tr style="background-color: #f8fafc; color: #2c3e50;">
+            <th style="padding: 12px 15px; text-align: right; border: 1px solid #ddd;">اسم العميل</th>
+            <th style="padding: 12px 15px; text-align: right; border: 1px solid #ddd;">رقم العقد</th>
+            <th style="padding: 12px 15px; text-align: right; border: 1px solid #ddd;">تاريخ العقد</th>
+            <th style="padding: 12px 15px; text-align: right; border: 1px solid #ddd;">الجنسية</th>
+            <th style="padding: 12px 15px; text-align: right; border: 1px solid #ddd;">رقم التأشيرة</th>
+            <th style="padding: 12px 15px; text-align: right; border: 1px solid #ddd;">الاعتماد</th>
+          </tr>
+        </thead>
+        <tbody id="printTableBody">
+          <!-- Will be populated dynamically -->
+        </tbody>
+      </table>
+    </div>
+    <div class="print-footer" style="text-align: center; margin-top: 40px; color: #718096; font-size: 12px;">
+      تم إنشاء هذا التقرير بواسطة نظام الفارس العالمي - <span id="printYear"></span>
+    </div>
+  </div>
+
+  <script>
+    // إظهار رسالة نجاح
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // ترتيب الجدول
+    let sortColumn = -1;
+    let sortDirection = 'asc';
+    let currentPage = 1;
+    let itemsPerPage = 10;
+    let allData = [];
+    let filteredData = [];
+
+    function sortTable(column) {
+      if (sortColumn === column) {
+        sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+      } else {
+        sortColumn = column;
+        sortDirection = 'asc';
+      }
+      
+      // تحديث أيقونة الترتيب
+      document.querySelectorAll('th').forEach((th, i) => {
+        th.classList.remove('asc', 'desc');
+        if (i === column) {
+          th.classList.add(sortDirection);
+        }
+      });
+      
+      // إعادة ترتيب البيانات
+      filteredData.sort((a, b) => {
+        let aValue = a.cells[column].textContent;
+        let bValue = b.cells[column].textContent;
+        
+        // محاولة تحويل القيم إلى أرقام إذا كانت أرقامًا
+        const aNum = parseFloat(aValue.replace(/,/g, ''));
+        const bNum = parseFloat(bValue.replace(/,/g, ''));
+        
+        if (!isNaN(aNum) && !isNaN(bNum)) {
+          return sortDirection === 'asc' ? aNum - bNum : bNum - aNum;
+        }
+        
+        return sortDirection === 'asc' ? 
+          aValue.localeCompare(bValue) : 
+          bValue.localeCompare(aValue);
+      });
+      
+      // تحديث الجدول
+      renderTable();
+    }
+
+    // بحث في الجدول
+    document.getElementById('searchInput').addEventListener('keyup', function() {
+      const searchTerm = this.value.toLowerCase();
+      const table = document.getElementById('tableBody');
+      const rows = table.getElementsByTagName('tr');
+      
+      let hasResults = false;
+      
+      for (let i = 0; i < rows.length; i++) {
+        const cells = rows[i].getElementsByTagName('td');
+        let match = false;
+        
+        for (let j = 0; j < cells.length; j++) {
+          if (cells[j].textContent.toLowerCase().includes(searchTerm)) {
+            match = true;
+            break;
+          }
+        }
+        
+        if (match) {
+          rows[i].style.display = '';
+          hasResults = true;
+        } else {
+          rows[i].style.display = 'none';
+        }
+      }
+      
+      // عرض رسالة "لا نتائج"
+      document.getElementById('emptyState').style.display = hasResults ? 'none' : 'block';
+      
+      // تحديث أرقام الصفحات
+      updatePagination();
+    });
+
+    // بحث متقدم
+    document.getElementById('searchBtn').addEventListener('click', function() {
+      const btn = this;
+      btn.classList.add('loading');
+      
+      // تصفية البيانات
+      filterData();
+      
+      // إزالة حالة التحميل
+      setTimeout(() => {
+        btn.classList.remove('loading');
+        showToast("تم تحديث النتائج");
+      }, 800);
+    });
+
+    // تصفية البيانات
+    function filterData() {
+      // الحصول على قيم الفلاتر
+      const fromDate = document.getElementById('fromDate').value;
+      const toDate = document.getElementById('toDate').value;
+      const nationality = document.getElementById('nationality').value;
+      const externalOffice = document.getElementById('externalOffice').value;
+      const internalOffice = document.getElementById('internalOffice').value;
+      const contractSource = document.getElementById('contractSource').value;
+      
+      // إعادة تعيين البيانات
+      filteredData = [...allData];
+      
+      // تطبيق الفلاتر
+      if (fromDate && toDate) {
+        filteredData = filteredData.filter(row => {
+          const date = row.cells[2].textContent;
+          return date >= fromDate && date <= toDate;
+        });
+      }
+      
+      if (nationality) {
+        filteredData = filteredData.filter(row => 
+          row.cells[3].textContent.includes(nationality)
+        );
+      }
+      
+      if (externalOffice) {
+        filteredData = filteredData.filter(row => 
+          row.cells[7].textContent.includes(externalOffice)
+        );
+      }
+      
+      if (internalOffice) {
+        filteredData = filteredData.filter(row => 
+          row.cells[8].textContent.includes(internalOffice)
+        );
+      }
+      
+      if (contractSource) {
+        filteredData = filteredData.filter(row => 
+          row.cells[8].textContent.includes(contractSource)
+        );
+      }
+      
+      // تحديث الجدول
+      currentPage = 1;
+      renderTable();
+      updatePagination();
+      
+      // عرض رسالة "لا نتائج"
+      document.getElementById('emptyState').style.display = 
+        filteredData.length > 0 ? 'none' : 'block';
+    }
+
+    // عرض البيانات في الجدول
+    function renderTable() {
+      const tableBody = document.getElementById('tableBody');
+      tableBody.innerHTML = '';
+      
+      const start = (currentPage - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
+      const pageData = filteredData.slice(start, end);
+      
+      pageData.forEach(row => {
+        tableBody.appendChild(row);
+      });
+    }
+
+    // تحديث أرقام الصفحات
+    function updatePagination() {
+      const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+      const pagination = document.getElementById('pagination');
+      
+      // تحديث النطاق الحالي
+      const start = (currentPage - 1) * itemsPerPage + 1;
+      const end = Math.min(currentPage * itemsPerPage, filteredData.length);
+      document.getElementById('currentRange')?.textContent = `${start}-${end}`;
+      
+      // تحديث أزرار الصفحات
+      const pageButtons = pagination.querySelectorAll('.pagination-btn:not([data-page="prev"]):not([data-page="next"])');
+      pageButtons.forEach(btn => {
+        const page = parseInt(btn.getAttribute('data-page'));
+        btn.classList.toggle('active', page === currentPage);
+      });
+      
+      // تمكين/تعطيل أزرار السابق/التالي
+      pagination.querySelector('[data-page="prev"]').disabled = currentPage === 1;
+      pagination.querySelector('[data-page="next"]').disabled = currentPage === totalPages;
+    }
+
+    // الانتقال إلى صفحة معينة
+    document.querySelectorAll('.pagination-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const page = this.getAttribute('data-page');
+        
+        if (page === 'prev' && currentPage > 1) {
+          currentPage--;
+        } else if (page === 'next' && currentPage < Math.ceil(filteredData.length / itemsPerPage)) {
+          currentPage++;
+        } else if (!isNaN(parseInt(page))) {
+          currentPage = parseInt(page);
+        }
+        
+        renderTable();
+        updatePagination();
+      });
+    });
+
+    // تغيير عدد العناصر في الصفحة
+    document.getElementById('entriesSelect').addEventListener('change', function() {
+      itemsPerPage = parseInt(this.value);
+      currentPage = 1;
+      renderTable();
+      updatePagination();
+    });
+
+    // تحديد التواريخ تلقائيًا (من اليوم إلى 7 أيام قبل)
+    document.addEventListener('DOMContentLoaded', function() {
+      const today = new Date();
+      const fromDate = new Date(today);
+      fromDate.setDate(today.getDate() - 7);
+      
+      function formatDate(date) {
+        return date.toISOString().split('T')[0];
+      }
+      
+      document.getElementById('fromDate').value = formatDate(fromDate);
+      document.getElementById('toDate').value = formatDate(today);
+      
+      // تحميل البيانات
+      loadData();
+    });
+
+    // طباعة تقرير موجز
+    function printSummary() {
+      // تعيين بيانات الطباعة
+      const printDate = new Date().toLocaleDateString('ar-EG');
+      const fromDate = document.getElementById('fromDate').value;
+      const toDate = document.getElementById('toDate').value;
+      const period = fromDate && toDate ? 
+        `${fromDate} إلى ${toDate}` : 'جميع الفترات';
+      
+      document.getElementById('printDate').textContent = printDate;
+      document.getElementById('printPeriod').textContent = period;
+      document.getElementById('printYear').textContent = new Date().getFullYear();
+      
+      // تعبئة جدول الطباعة
+      const printTableBody = document.getElementById('printTableBody');
+      printTableBody.innerHTML = '';
+      
+      filteredData.forEach(row => {
+        const tr = document.createElement('tr');
+        [0, 1, 2, 3, 4, 11].forEach(col => { // الأعمدة التي نريد تضمينها في الطباعة
+          const td = document.createElement('td');
+          td.style.border = '1px solid #ddd';
+          td.style.padding = '8px 10px';
+          td.textContent = row.cells[col].textContent;
+          tr.appendChild(td);
+        });
+        printTableBody.appendChild(tr);
+      });
+      
+      // فتح نافذة الطباعة
+      const printContent = document.querySelector('.print-section').innerHTML;
+      const originalContent = document.body.innerHTML;
+      
+      document.body.innerHTML = printContent;
+      window.print();
+      
+      // إعادة المحتوى الأصلي
+      document.body.innerHTML = originalContent;
+      document.location.reload();
+    }
+
+    // تحميل جدول العقود من الذاكرة
+    function loadData() {
+      // بيانات افتراضية للاختبار
+      const sampleData = [
+        ['خالد علي', '000002', '2024-01-15', 'الفلبين', '19566516513', '101115515', 'PONTILA PAMA HAIDELIZA', '‏PACIFIC STAR INTERNATIONAL', 'مساند', 'Musand c,مساند,notarial c. (توثيق),WKALA', 'VISA. STAMPING,OEC,TESDA,OWWA,C.POLO,Medical,Biometric,حجز تذكرة طيران', 'وافق'],
+        ['العنزي عبدالعزيز', '000004', '2024-02-20', 'سعودى', '19075555555', '1009310663', '-', 'AL MADINA COMPANY', 'AL MADINA COMPANY', '-', '-', 'لم يُعتمد'],
+        ['ال عبدالله محمد', '000003', '2024-03-10', 'اثيوبيا', '198998852', '1091677185', 'MOHAMMED NEIMA SHIKUR', 'ILEL LIQA FOREIGN EMPLOYMENT AGENCY', 'Manbo Private Foreign Employment Agency', '-', '-', 'وافق'],
+        ['أحمد سعيد', '000005', '2024-04-05', 'الفلبين', '1978978978', '1122334455', 'JANE DOE', 'PACIFIC STAR INTERNATIONAL', 'مساند', 'Musand c, مساند', 'VISA. STAMPING, OEC', 'وافق'],
+        ['محمد علي', '000006', '2024-05-12', 'السعودية', '1912345678', '1234567890', 'JOHN SMITH', 'AL MADINA COMPANY', 'مكتب خاص', 'Musand c', 'VISA. STAMPING', 'لم يُعتمد'],
+        ['فهد عبدالله', '000007', '2024-06-18', 'إثيوبيا', '1987654321', '2233445566', 'ABEBA TESFAYE', 'ILEL LIQA FOREIGN AGENCY', 'مساند', 'Musand c, notarial c.', 'OEC, TESDA', 'وافق'],
+        ['سعود محمد', '000008', '2024-07-22', 'الكويت', '1998877665', '3344556677', 'ALI AL-KUWAITI', 'AL MADINA COMPANY', 'مكتب خاص', 'Musand c', 'VISA. STAMPING', 'لم يُعتمد'],
+        ['خالد حسن', '000009', '2024-08-30', 'الأردن', '1965432109', '4455667788', 'MOHAMMAD AL-HASAN', 'PACIFIC STAR INTERNATIONAL', 'مساند', 'Musand c, notarial c.', 'OEC, TESDA, OW', 'وافق'],
+        ['عبدالله سليمان', '000010', '2024-09-14', 'مصر', '1954321098', '5566778899', 'AHMED MOHAMED', 'ILEL LIQA FOREIGN AGENCY', 'مساند', 'Musand c', 'VISA. STAMPING, OEC', 'وافق'],
+        ['ناصر خالد', '000011', '2024-10-05', 'الفلبين', '1943210987', '6677889900', 'MARIA SANTOS', 'PACIFIC STAR INTERNATIONAL', 'مساند', 'Musand c, notarial c.', 'OEC, TESDA, OW', 'وافق']
+      ];
+      
+      // إنشاء عناصر جدول من البيانات
+      const tableBody = document.getElementById('tableBody');
+      tableBody.innerHTML = '';
+      
+      allData = [];
+      sampleData.forEach(data => {
+        const row = document.createElement('tr');
+        data.forEach(cell => {
+          const td = document.createElement('td');
+          td.textContent = cell;
+          row.appendChild(td);
+        });
+        allData.push(row);
+      });
+      
+      // تعيين البيانات المفلترة
+      filteredData = [...allData];
+      
+      // عرض البيانات
+      renderTable();
+      updatePagination();
+      
+      // عرض رسالة "لا نتائج" إذا لزم
+      document.getElementById('emptyState').style.display = 
+        filteredData.length > 0 ? 'none' : 'block';
+    }
+
+    // تبديل اللغة
+    function toggleLanguage() {
+      const isArabic = document.documentElement.lang === 'ar';
+      const newLang = isArabic ? 'en' : 'ar';
+      
+      // تحديث لغة الصفحة
+      document.documentElement.lang = newLang;
+      
+      // تحديث النصوص
+      if (newLang === 'en') {
+        document.querySelector('.page-title').textContent = 'Reports';
+        document.querySelectorAll('label')[0].textContent = 'From Date';
+        document.querySelectorAll('label')[1].textContent = 'To Date';
+        document.querySelectorAll('label')[2].textContent = 'Nationality';
+        document.querySelectorAll('label')[3].textContent = 'External Office';
+        document.querySelectorAll('label')[4].textContent = 'Internal Office';
+        document.querySelectorAll('label')[5].textContent = 'Contract Source';
+        
+        document.querySelector('.btn-search').textContent = 'Search';
+        document.querySelector('.entries select').previousElementSibling.textContent = 'Show ';
+        document.querySelector('#searchInput').placeholder = 'Search in table...';
+        
+        // تحديث عناوين الجدول
+        const headers = [
+          'Client Name', 'Contract Number', 'Contract Date', 'Nationality',
+          'Visa Number', 'ID Number', 'Candidate Name', 'External Office',
+          'Contract Source', 'Internal Actions', 'External Actions', 'Approval'
+        ];
+        document.querySelectorAll('th').forEach((th, index) => {
+          if (index < headers.length) {
+            th.innerHTML = headers[index] + ' <span class="sort-icon">⇅</span>';
+          }
+        });
+        
+        // تحديث رسالة "لا نتائج"
+        document.querySelector('.empty-state h3').textContent = 'No matching results found';
+        document.querySelector('.empty-state p').textContent = 'Try adjusting your criteria and try again';
+      } else {
+        document.querySelector('.page-title').textContent = 'التقارير';
+        document.querySelectorAll('label')[0].textContent = 'من تاريخ';
+        document.querySelectorAll('label')[1].textContent = 'إلى تاريخ';
+        document.querySelectorAll('label')[2].textContent = 'الجنسية';
+        document.querySelectorAll('label')[3].textContent = 'مكتب خارجي';
+        document.querySelectorAll('label')[4].textContent = 'مكتب داخلي';
+        document.querySelectorAll('label')[5].textContent = 'مصدر العقد';
+        
+        document.querySelector('.btn-search').textContent = 'بحث';
+        document.querySelector('.entries select').previousElementSibling.textContent = 'أظهر ';
+        document.querySelector('#searchInput').placeholder = 'بحث في الجدول...';
+        
+        // تحديث عناوين الجدول
+        const headers = [
+          'اسم العميل', 'رقم العقد', 'تاريخ العقد', 'الجنسية',
+          'رقم التأشيرة', 'رقم الهويه', 'اسم المرشح', 'مكتب خارجي',
+          'مصدر العقد', 'اجراءات داخليه', 'اجراءات خارجيه', 'اعتماد'
+        ];
+        document.querySelectorAll('th').forEach((th, index) => {
+          if (index < headers.length) {
+            th.innerHTML = headers[index] + ' <span class="sort-icon">⇅</span>';
+          }
+        });
+        
+        // تحديث رسالة "لا نتائج"
+        document.querySelector('.empty-state h3').textContent = 'لا توجد نتائج مطابقة لبحثك';
+        document.querySelector('.empty-state p').textContent = 'جرب تعديل المعايير وحاول مرة أخرى';
+      }
+      
+      // تحديث زر اللغة
+      const langBtn = document.querySelector('a[href="#"][onclick*="toggleLanguage"]');
+      langBtn.textContent = newLang === 'en' ? '• عربي' : '• English';
+    }
+  </script>
+</body>
+</html>
+
+<link rel="stylesheet" href="index.html">

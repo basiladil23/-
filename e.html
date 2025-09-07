@@ -1,0 +1,3319 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>الصلاحيات - الفارس العالمي</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --primary-light: #34495e;
+      --secondary: #3498db;
+      --success: #2ecc71;
+      --warning: #f39c12;
+      --danger: #e74c3c;
+      --light: #ecf0f1;
+      --white: #ffffff;
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 8px 20px rgba(0, 0, 0, 0.15);
+      --transition: all 0.3s ease;
+      --border-radius: 12px;
+      --card-padding: 18px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Cairo', sans-serif;
+    }
+
+    body {
+      background: #f8fafc;
+      color: #333;
+      min-height: 100vh;
+      direction: rtl;
+      font-size: 14px;
+      overflow-x: hidden;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--primary);
+      padding: 12px 20px;
+      color: white;
+      box-shadow: var(--shadow-md);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+    .user-info img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+    .logo {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo i {
+      font-size: 1.2rem;
+    }
+
+    /* Navigation */
+    nav.nav {
+      display: flex;
+      gap: 8px;
+      padding: 10px 15px;
+      background: var(--light);
+      border-bottom: 1px solid #dcdde1;
+      flex-wrap: wrap;
+    }
+    nav.nav a {
+      text-decoration: none;
+      color: var(--primary);
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 6px;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    nav.nav a:hover, nav.nav a.active {
+      background: var(--primary-light);
+      color: white;
+    }
+    nav.nav a i {
+      font-size: 1.1rem;
+    }
+
+    /* Main */
+    main {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 0 20px;
+    }
+    .page-title {
+      font-size: 1.8rem;
+      color: var(--primary);
+      margin-bottom: 25px;
+      text-align: right;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .page-title i {
+      font-size: 1.5rem;
+      color: var(--secondary);
+    }
+
+    /* Actions Bar */
+    .actions-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    .search-box {
+      display: flex;
+      align-items: center;
+      background: var(--white);
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 5px 10px;
+      width: 250px;
+    }
+    .search-box i {
+      color: #95a5a6;
+      margin-left: 8px;
+    }
+    .search-box input {
+      border: none;
+      background: transparent;
+      width: 100%;
+      padding: 8px 0;
+      outline: none;
+    }
+    .btn {
+      padding: 10px 20px;
+      background: var(--secondary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: var(--transition);
+    }
+    .btn:hover {
+      background: #2980b9;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(52, 152, 219, 0.2);
+    }
+    .btn.danger {
+      background: var(--danger);
+    }
+    .btn.danger:hover {
+      background: #c0392b;
+    }
+    .btn.success {
+      background: var(--success);
+    }
+    .btn.success:hover {
+      background: #27ae60;
+    }
+    .btn.outline {
+      background: transparent;
+      border: 1px solid var(--secondary);
+      color: var(--secondary);
+    }
+    .btn.outline:hover {
+      background: rgba(52, 152, 219, 0.1);
+    }
+
+    /* Table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      background: var(--white);
+      box-shadow: var(--shadow-md);
+    }
+    th, td {
+      padding: 14px 16px;
+      text-align: right;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    th {
+      background: linear-gradient(to bottom, #f8fafc, #f1f5f9);
+      color: var(--primary);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    th:hover {
+      background: linear-gradient(to bottom, #f1f5f9, #e2e8f0);
+    }
+    th .sort-icon {
+      opacity: 0.3;
+      transition: var(--transition);
+    }
+    th.asc .sort-icon {
+      opacity: 1;
+      content: "↑";
+    }
+    th.desc .sort-icon {
+      opacity: 1;
+      content: "↓";
+    }
+    tr:hover {
+      background: #f8fafc;
+    }
+    .highlight {
+      background-color: #fff9db !important;
+    }
+
+    /* Pagination */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      margin: 25px 0;
+      color: #555;
+      font-size: 0.95rem;
+    }
+    .pagination-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .pagination-btn {
+      padding: 6px 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: var(--transition);
+      min-width: 40px;
+    }
+    .pagination-btn.active, .pagination-btn:hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: #718096;
+      background: var(--white);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-md);
+      margin-top: 20px;
+    }
+    .empty-state img {
+      width: 120px;
+      margin-bottom: 15px;
+      opacity: 0.6;
+    }
+    .empty-state h3 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+    .empty-state p {
+      margin-bottom: 15px;
+    }
+    .empty-state .btn {
+      background: var(--secondary);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    /* Confirmation Modal */
+    .confirmation-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      direction: rtl;
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+    .confirmation-modal.show {
+      opacity: 1;
+    }
+    .confirmation-content {
+      background: var(--white);
+      padding: 28px;
+      border-radius: 16px;
+      width: 420px;
+      max-width: 90vw;
+      text-align: center;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.22);
+      font-family: 'Cairo', sans-serif;
+      line-height: 1.7;
+      transform: translateY(10px);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      position: relative;
+    }
+    .confirmation-modal.show .confirmation-content {
+      transform: translateY(0);
+    }
+    .confirmation-content::before {
+      content: "⚠️";
+      position: absolute;
+      top: -25px;
+      right: 50%;
+      transform: translateX(50%);
+      font-size: 3rem;
+      background: white;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(231, 76, 60, 0.2);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4); }
+      70% { box-shadow: 0 0 0 15px rgba(231, 76, 60, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
+    }
+    .confirmation-content h3 {
+      margin-bottom: 18px;
+      color: var(--danger);
+      font-weight: 700;
+      font-size: 1.5rem;
+      padding-top: 10px;
+      letter-spacing: -0.5px;
+    }
+    .confirmation-content p {
+      margin-bottom: 28px;
+      font-size: 1.15rem;
+      color: #4a4a4a;
+      line-height: 1.7;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .confirmation-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+    .confirmation-buttons button {
+      padding: 12px 30px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      min-width: 135px;
+      font-family: 'Cairo', sans-serif;
+      font-size: 1.05rem;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+      position: relative;
+      overflow: hidden;
+    }
+    .confirmation-buttons button::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(0);
+      opacity: 0;
+      transition: transform 0.3s ease, opacity 0.2s ease;
+      border-radius: 10px;
+    }
+    .confirmation-buttons button:active::after {
+      transform: scale(4);
+      opacity: 0;
+      transition: transform 0.3s ease, opacity 0.2s ease;
+    }
+    .cancel-btn {
+      background: var(--light);
+      color: var(--primary);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+    }
+    .cancel-btn:hover {
+      background: #e0e6ed;
+      color: var(--primary-light);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
+    }
+    .confirm-btn {
+      background: linear-gradient(to bottom, var(--danger), #c0392b);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(231, 76, 60, 0.25);
+    }
+    .confirm-btn:hover {
+      background: linear-gradient(to bottom, #c0392b, #a93226);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(231, 76, 60, 0.3);
+    }
+    @media (max-width: 480) {
+      .confirmation-content {
+        padding: 25px 20px;
+        width: 95%;
+      }
+      .confirmation-content h3 {
+        font-size: 1.4rem;
+      }
+      .confirmation-content p {
+        font-size: 1.05rem;
+        min-height: auto;
+      }
+      .confirmation-buttons {
+        flex-direction: column;
+        width: 100%;
+      }
+      .confirmation-buttons button {
+        width: 100%;
+        margin: 5px 0;
+      }
+    }
+
+    /* Form Overlay */
+    .form-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.35);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .form-container {
+      background: var(--white);
+      padding: var(--card-padding);
+      border-radius: 14px;
+      max-width: 900px;
+      width: 90%;
+      text-align: right;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+    .form-container h2 {
+      margin-bottom: 20px;
+      color: var(--primary);
+      font-size: 1.6rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .close-btn {
+      float: left;
+      cursor: pointer;
+      font-weight: 700;
+      color: #b2bec3;
+      font-size: 1.8rem;
+    }
+    .close-btn:hover {
+      color: var(--danger);
+    }
+    .form-section {
+      margin-bottom: 25px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #eee;
+    }
+    .form-section h3 {
+      color: var(--primary);
+      margin-bottom: 15px;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: #fafbfd;
+      font-size: 14px;
+    }
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .form-actions button {
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .form-actions .btn-cancel {
+      background: var(--light);
+      color: var(--primary);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+    }
+    .form-actions .btn-cancel:hover {
+      background: #e0e6ed;
+    }
+    .form-actions .btn-submit {
+      background: var(--secondary);
+      color: white;
+      border: none;
+    }
+    .form-actions .btn-submit:hover {
+      background: #2980b9;
+    }
+
+    /* Permission Categories */
+    .permission-categories {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+    .category-btn {
+      padding: 6px 12px;
+      border: 1px solid #ddd;
+      border-radius: 20px;
+      background: var(--light);
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 0.9rem;
+    }
+    .category-btn.active {
+      background: var(--secondary);
+      color: white;
+      border-color: var(--secondary);
+    }
+
+    /* Permissions Grid */
+    .permissions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+    .permission-card {
+      background: #f8fafc;
+      border-radius: 8px;
+      padding: 15px;
+      border: 1px solid #e0e0e0;
+      transition: var(--transition);
+    }
+    .permission-card:hover {
+      border-color: var(--secondary);
+      box-shadow: 0 4px 12px rgba(52, 152, 219, 0.1);
+    }
+    .permission-card h4 {
+      color: var(--primary);
+      margin-bottom: 10px;
+      font-size: 1.1rem;
+    }
+    .permission-options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .permission-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .permission-option input {
+      width: auto;
+      margin: 0;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: var(--success);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 1100;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: all 0.4s ease;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .toast.success { background: var(--success); }
+    .toast.warning { background: var(--warning); }
+    .toast.error { background: var(--danger); }
+    .toast.info { background: var(--secondary); }
+
+    /* Bulk Actions */
+    .bulk-actions {
+      display: flex;
+      gap: 10px;
+      margin: 15px 0;
+      padding: 10px;
+      background: var(--light);
+      border-radius: 8px;
+      align-items: center;
+    }
+    .bulk-actions .btn {
+      padding: 8px 15px;
+      font-size: 0.9rem;
+    }
+
+    /* Search Filter */
+    .search-filter {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 15px;
+      padding: 10px;
+      background: var(--light);
+      border-radius: 8px;
+    }
+    .search-filter input {
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 8px 12px;
+      width: 100%;
+    }
+
+    /* Permission Tags */
+    .permission-tag {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      margin: 2px;
+      background: var(--light);
+      color: var(--primary);
+    }
+    .permission-tag.active {
+      background: var(--secondary);
+      color: white;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .actions-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .search-box {
+        width: 100%;
+      }
+      .permissions-grid {
+        grid-template-columns: 1fr;
+      }
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="user-info">
+      <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User">
+      <span>موظف</span>
+    </div>
+    <div class="logo">
+      <i class="fas fa-shield-alt"></i> الفارس العالمي
+    </div>
+  </header>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <a href="#" class="active">الصلاحيات</a>
+    <a href="#" onclick="navigateTo('nationalities')">الجنسيات</a>
+    <a href="#" onclick="navigateTo('airports')">المطارات</a>
+    <a href="#" onclick="navigateTo('offices')">المكاتب</a>
+    <a href="#" onclick="navigateTo('professions')">المهنة</a>
+    <a href="#" onclick="navigateTo('users')">المستخدمين</a>
+    <a href="#" onclick="navigateTo('status')">الحالة</a>
+    <a href="#" onclick="navigateTo('countries')">الدول</a>
+    <a href="#" onclick="navigateTo('religions')">الديانة</a>
+    <a href="#" onclick="toggleLanguage()">
+      <i class="fas fa-globe"></i> • English
+    </a>
+  </nav>
+
+  <!-- Main Content -->
+  <main>
+    <h1 class="page-title">
+      <i class="fas fa-user-shield"></i> قائمة الصلاحيات
+    </h1>
+
+    <!-- Actions Bar -->
+    <div class="actions-bar">
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchRoles" placeholder="ابحث في الصلاحيات...">
+      </div>
+      <div>
+        <button class="btn" onclick="openRoleForm()">
+          <i class="fas fa-plus"></i> اضافة صلاحيه
+        </button>
+      </div>
+    </div>
+
+    <!-- Bulk Actions -->
+    <div class="bulk-actions" style="display: none;">
+      <span>محدد: <strong id="selectedCount">0</strong></span>
+      <button class="btn outline" onclick="toggleAllPermissions(true)">
+        <i class="fas fa-check-square"></i> تفعيل الكل
+      </button>
+      <button class="btn outline" onclick="toggleAllPermissions(false)">
+        <i class="fas fa-square"></i> إلغاء التحديد
+      </button>
+      <button class="btn danger" onclick="bulkDeleteRoles()">
+        <i class="fas fa-trash"></i> حذف المحدد
+      </button>
+    </div>
+
+    <!-- Roles Table -->
+    <table id="rolesTable">
+      <thead>
+        <tr>
+          <th style="width: 50px;">
+            <input type="checkbox" id="selectAllRoles" onclick="toggleSelectAllRoles()">
+          </th>
+          <th onclick="sortTable(0)">الرقم <span class="sort-icon">⇅</span></th>
+          <th onclick="sortTable(1)">الاسم <span class="sort-icon">⇅</span></th>
+          <th>الأمر</th>
+        </tr>
+      </thead>
+      <tbody id="rolesTableBody">
+        <!-- Will be populated dynamically -->
+      </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <div class="pagination">
+      <button class="pagination-btn" id="prevPage">السابق</button>
+      <span class="pagination-info">إظهار <span id="currentRange">1-4</span> من أصل <span id="totalRecords">4</span> مدخل</span>
+      <button class="pagination-btn" id="nextPage">التالي</button>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" id="emptyState" style="display: none;">
+      <i class="fas fa-user-shield" style="font-size: 3rem; color: #b2bec3; margin-bottom: 15px;"></i>
+      <h3>لا توجد صلاحيات</h3>
+      <p>لم يتم إنشاء أي صلاحيات بعد. يمكنك إنشاء صلاحية جديدة بالنقر على الزر أدناه</p>
+      <button class="btn" onclick="openRoleForm()">
+        <i class="fas fa-plus"></i> اضافة صلاحيه
+      </button>
+    </div>
+  </main>
+
+  <!-- Confirmation Modal -->
+  <div class="confirmation-modal" id="confirmationModal">
+    <div class="confirmation-content">
+      <h3 id="confirmationTitle">هل أنت متأكد؟</h3>
+      <p id="confirmationText">لن تستطيع التراجع عن هذا الإجراء لاحقًا</p>
+      <div class="confirmation-buttons">
+        <button class="cancel-btn" onclick="hideConfirmation()">إلغاء</button>
+        <button class="confirm-btn" id="confirmActionBtn">نعم، احذف هذه الصلاحية</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast">تم الحفظ بنجاح!</div>
+
+  <!-- Role Form Overlay -->
+  <div class="form-overlay" id="roleFormOverlay">
+    <div class="form-container">
+      <span class="close-btn" onclick="closeRoleForm()">✖</span>
+      <h2 id="roleFormTitle">اضافة صلاحيه</h2>
+      
+      <div class="form-section">
+        <h3>المعلومات الأساسية</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>الاسم <span class="required">*</span></label>
+            <input type="text" id="roleName" placeholder="ادخل الاسم">
+            <div class="error-message" id="roleName-error"></div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="form-section">
+        <h3>الصلاحيات</h3>
+        
+        <div class="search-filter">
+          <i class="fas fa-filter"></i>
+          <input type="text" id="searchPermissions" placeholder="ابحث في الصلاحيات...">
+        </div>
+        
+        <div class="permission-categories">
+          <button class="category-btn active" data-category="all" onclick="changePermissionCategory('all')">الكل</button>
+          <button class="category-btn" data-category="workers" onclick="changePermissionCategory('workers')">العاملين</button>
+          <button class="category-btn" data-category="accommodation" onclick="changePermissionCategory('accommodation')">الإيواء</button>
+          <button class="category-btn" data-category="activity" onclick="changePermissionCategory('activity')">سجل النشاط</button>
+          <button class="category-btn" data-category="airports" onclick="changePermissionCategory('airports')">المطارات</button>
+          <button class="category-btn" data-category="contracts" onclick="changePermissionCategory('contracts')">العقود</button>
+          <button class="category-btn" data-category="reports" onclick="changePermissionCategory('reports')">التقارير</button>
+        </div>
+        
+        <div class="permissions-grid" id="permissionsGrid">
+          <!-- سيتولد ديناميكيًا -->
+        </div>
+      </div>
+      
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" onclick="closeRoleForm()">إلغاء</button>
+        <button type="button" class="btn-submit" onclick="saveRole()">حفظ الصلاحية</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ==========================
+    // نظام التنقل المعياري
+    // ==========================
+    document.addEventListener('DOMContentLoaded', function() {
+      // تحميل الصلاحيات كافتراضي
+      loadModule('roles');
+      
+      // إعداد أزرار التنقل
+      setupNavigation();
+    });
+    
+    // ==========================
+    // إعداد أزرار التنقل
+    // ==========================
+    function setupNavigation() {
+      // إعداد أزرار القائمة
+      const navLinks = document.querySelectorAll('nav.nav a');
+      navLinks.forEach(link => {
+        // تخطي روابط اللغة
+        if (link.getAttribute('onclick') && link.getAttribute('onclick').includes('toggleLanguage')) return;
+        
+        // إزالة فئة النشاط من جميع الروابط
+        link.classList.remove('active');
+        
+        // إضافة فئة النشاط لرابط الصلاحيات كافتراضي
+        if (link.textContent.includes('الصلاحيات')) {
+          link.classList.add('active');
+        }
+        
+        // إعداد مستمع الأحداث
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          // إزالة فئة النشاط من جميع الروابط
+          document.querySelectorAll('nav.nav a').forEach(l => {
+            l.classList.remove('active');
+          });
+          
+          // إضافة فئة النشاط للرابط المحدد
+          this.classList.add('active');
+          
+          // تحديد الوحدة المستهدفة
+          let module;
+          if (this.textContent.includes('الصلاحيات')) module = 'roles';
+          else if (this.textContent.includes('الجنسيات')) module = 'nationalities';
+          else if (this.textContent.includes('المطارات')) module = 'airports';
+          else if (this.textContent.includes('المكاتب')) module = 'offices';
+          else if (this.textContent.includes('المهنة')) module = 'professions';
+          else if (this.textContent.includes('المستخدمين')) module = 'users';
+          else if (this.textContent.includes('الحالة')) module = 'status';
+          else if (this.textContent.includes('الدول')) module = 'countries';
+          else if (this.textContent.includes('الديانة')) module = 'religions';
+          else module = 'roles';
+          
+          // تحميل الوحدة
+          loadModule(module);
+        });
+      });
+    }
+    
+    // ==========================
+    // تحميل الوحدة المطلوبة
+    // ==========================
+    function loadModule(module) {
+      // تحديث عنوان الصفحة
+      updatePageTitle(module);
+      
+      // تحميل المحتوى بناءً على الوحدة
+      switch(module) {
+        case 'roles':
+          loadRolesModule();
+          break;
+        case 'nationalities':
+          loadNationalitiesModule();
+          break;
+        case 'airports':
+          loadAirportsModule();
+          break;
+        case 'offices':
+          loadOfficesModule();
+          break;
+        case 'professions':
+          loadProfessionsModule();
+          break;
+        case 'users':
+          loadUsersModule();
+          break;
+        case 'status':
+          loadStatusModule();
+          break;
+        case 'countries':
+          loadCountriesModule();
+          break;
+        case 'religions':
+          loadReligionsModule();
+          break;
+        default:
+          loadRolesModule();
+      }
+    }
+    
+    // ==========================
+    // تحديث عنوان الصفحة
+    // ==========================
+    function updatePageTitle(module) {
+      const titleElement = document.querySelector('.page-title');
+      if (!titleElement) return;
+      
+      const lang = document.documentElement.lang === 'en' ? 'en' : 'ar';
+      
+      if (lang === 'ar') {
+        switch(module) {
+          case 'roles':
+            titleElement.innerHTML = '<i class="fas fa-user-shield"></i> قائمة الصلاحيات';
+            break;
+          case 'nationalities':
+            titleElement.innerHTML = '<i class="fas fa-flag"></i> الجنسيات';
+            break;
+          case 'airports':
+            titleElement.innerHTML = '<i class="fas fa-plane"></i> المطارات';
+            break;
+          case 'offices':
+            titleElement.innerHTML = '<i class="fas fa-building"></i> المكاتب';
+            break;
+          case 'professions':
+            titleElement.innerHTML = '<i class="fas fa-briefcase"></i> المهن';
+            break;
+          case 'users':
+            titleElement.innerHTML = '<i class="fas fa-users"></i> المستخدمين';
+            break;
+          case 'status':
+            titleElement.innerHTML = '<i class="fas fa-circle"></i> الحالة';
+            break;
+          case 'countries':
+            titleElement.innerHTML = '<i class="fas fa-globe-asia"></i> الدول';
+            break;
+          case 'religions':
+            titleElement.innerHTML = '<i class="fas fa-place-of-worship"></i> الديانات';
+            break;
+          default:
+            titleElement.innerHTML = '<i class="fas fa-user-shield"></i> قائمة الصلاحيات';
+        }
+      } else {
+        switch(module) {
+          case 'roles':
+            titleElement.innerHTML = '<i class="fas fa-user-shield"></i> Roles List';
+            break;
+          case 'nationalities':
+            titleElement.innerHTML = '<i class="fas fa-flag"></i> Nationalities';
+            break;
+          case 'airports':
+            titleElement.innerHTML = '<i class="fas fa-plane"></i> Airports';
+            break;
+          case 'offices':
+            titleElement.innerHTML = '<i class="fas fa-building"></i> Offices';
+            break;
+          case 'professions':
+            titleElement.innerHTML = '<i class="fas fa-briefcase"></i> Professions';
+            break;
+          case 'users':
+            titleElement.innerHTML = '<i class="fas fa-users"></i> Users';
+            break;
+          case 'status':
+            titleElement.innerHTML = '<i class="fas fa-circle"></i> Status';
+            break;
+          case 'countries':
+            titleElement.innerHTML = '<i class="fas fa-globe-asia"></i> Countries';
+            break;
+          case 'religions':
+            titleElement.innerHTML = '<i class="fas fa-place-of-worship"></i> Religions';
+            break;
+          default:
+            titleElement.innerHTML = '<i class="fas fa-user-shield"></i> Roles List';
+        }
+      }
+    }
+    
+    // ==========================
+    // تحميل وحدة الصلاحيات
+    // ==========================
+    function loadRolesModule() {
+      // إعداد واجهة الصلاحيات
+      document.querySelector('.page-title').textContent = 'قائمة الصلاحيات';
+      
+      // عرض محتوى الصلاحيات
+      const mainContent = document.querySelector('main');
+      mainContent.innerHTML = `
+        <h1 class="page-title">
+          <i class="fas fa-user-shield"></i> قائمة الصلاحيات
+        </h1>
+        
+        <!-- Actions Bar -->
+        <div class="actions-bar">
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchRoles" placeholder="ابحث في الصلاحيات...">
+          </div>
+          <div>
+            <button class="btn" onclick="openRoleForm()">
+              <i class="fas fa-plus"></i> اضافة صلاحيه
+            </button>
+          </div>
+        </div>
+        
+        <!-- Bulk Actions -->
+        <div class="bulk-actions" style="display: none;">
+          <span>محدد: <strong id="selectedCount">0</strong></span>
+          <button class="btn outline" onclick="toggleAllPermissions(true)">
+            <i class="fas fa-check-square"></i> تفعيل الكل
+          </button>
+          <button class="btn outline" onclick="toggleAllPermissions(false)">
+            <i class="fas fa-square"></i> إلغاء التحديد
+          </button>
+          <button class="btn danger" onclick="bulkDeleteRoles()">
+            <i class="fas fa-trash"></i> حذف المحدد
+          </button>
+        </div>
+        
+        <!-- Roles Table -->
+        <table id="rolesTable">
+          <thead>
+            <tr>
+              <th style="width: 50px;">
+                <input type="checkbox" id="selectAllRoles" onclick="toggleSelectAllRoles()">
+              </th>
+              <th onclick="sortTable(0)">الرقم <span class="sort-icon">⇅</span></th>
+              <th onclick="sortTable(1)">الاسم <span class="sort-icon">⇅</span></th>
+              <th>الأمر</th>
+            </tr>
+          </thead>
+          <tbody id="rolesTableBody">
+            <!-- Will be populated dynamically -->
+          </tbody>
+        </table>
+        
+        <!-- Pagination -->
+        <div class="pagination">
+          <button class="pagination-btn" id="prevPage">السابق</button>
+          <span class="pagination-info">إظهار <span id="currentRange">1-4</span> من أصل <span id="totalRecords">4</span> مدخل</span>
+          <button class="pagination-btn" id="nextPage">التالي</button>
+        </div>
+        
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyState" style="display: none;">
+          <i class="fas fa-user-shield" style="font-size: 3rem; color: #b2bec3; margin-bottom: 15px;"></i>
+          <h3>لا توجد صلاحيات</h3>
+          <p>لم يتم إنشاء أي صلاحيات بعد. يمكنك إنشاء صلاحية جديدة بالنقر على الزر أدناه</p>
+          <button class="btn" onclick="openRoleForm()">
+            <i class="fas fa-plus"></i> اضافة صلاحيه
+          </button>
+        </div>
+      `;
+      
+      // إعادة تهيئة مكونات الصلاحيات
+      initializeRolesComponents();
+      
+      // تحميل البيانات
+      renderRolesTable();
+    }
+    
+    // ==========================
+    // تهيئة مكونات الصلاحيات
+    // ==========================
+    function initializeRolesComponents() {
+      // إعداد أحداث البحث
+      document.getElementById('searchRoles').addEventListener('keyup', function() {
+        const searchTerm = this.value.toLowerCase();
+        const table = document.getElementById('rolesTableBody');
+        const rows = table.getElementsByTagName('tr');
+        
+        let hasResults = false;
+        
+        for (let i = 0; i < rows.length; i++) {
+          const cells = rows[i].getElementsByTagName('td');
+          let match = false;
+          
+          for (let j = 1; j < cells.length - 1; j++) { // استثناء عمود التحديد وعمود الإجراءات
+            if (cells[j].textContent.toLowerCase().includes(searchTerm)) {
+              match = true;
+              break;
+            }
+          }
+          
+          if (match) {
+            rows[i].style.display = '';
+            hasResults = true;
+          } else {
+            rows[i].style.display = 'none';
+          }
+        }
+        
+        // عرض رسالة "لا نتائج"
+        document.getElementById('emptyState').style.display = hasResults ? 'none' : 'block';
+      });
+      
+      // إعداد أحداث التصفح
+      document.getElementById('prevPage').addEventListener('click', function() {
+        showToast('هذه الميزة قادمة قريبًا', 'info');
+      });
+      
+      document.getElementById('nextPage').addEventListener('click', function() {
+        showToast('هذه الميزة قادمة قريبًا', 'info');
+      });
+    }
+    
+    // ==========================
+    // تحميل وحدة الجنسيات
+    // ==========================
+    function loadNationalitiesModule() {
+      // عرض محتوى الجنسيات
+      const mainContent = document.querySelector('main');
+      mainContent.innerHTML = `
+        <h1 class="page-title">
+          <i class="fas fa-flag"></i> الجنسيات
+        </h1>
+        
+        <!-- Actions Bar -->
+        <div class="actions-bar">
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchNationalities" placeholder="ابحث في الجنسيات...">
+          </div>
+          <div>
+            <button class="btn" onclick="openNationalityForm()">
+              <i class="fas fa-plus"></i> اضافة جنسية
+            </button>
+          </div>
+        </div>
+        
+        <!-- Bulk Actions -->
+        <div class="bulk-actions" style="display: none;">
+          <span>محدد: <strong id="selectedCount">0</strong></span>
+          <button class="btn danger" onclick="bulkDeleteNationalities()">
+            <i class="fas fa-trash"></i> حذف المحدد
+          </button>
+        </div>
+        
+        <!-- Nationalities Table -->
+        <table id="nationalitiesTable">
+          <thead>
+            <tr>
+              <th style="width: 50px;">
+                <input type="checkbox" id="selectAllNationalities" onclick="toggleSelectAllNationalities()">
+              </th>
+              <th onclick="sortNationalitiesTable(0)">الرقم <span class="sort-icon">⇅</span></th>
+              <th onclick="sortNationalitiesTable(1)">الاسم <span class="sort-icon">⇅</span></th>
+              <th>الأمر</th>
+            </tr>
+          </thead>
+          <tbody id="nationalitiesTableBody">
+            <tr>
+              <td><input type="checkbox" class="nationality-checkbox" value="1"></td>
+              <td>1</td>
+              <td>السعودية</td>
+              <td>
+                <div class="actions">
+                  <button class="action-btn edit" onclick="openNationalityForm('1')">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button class="action-btn delete" onclick="showDeleteNationalityConfirmation('1')">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="nationality-checkbox" value="2"></td>
+              <td>2</td>
+              <td>الفلبين</td>
+              <td>
+                <div class="actions">
+                  <button class="action-btn edit" onclick="openNationalityForm('2')">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button class="action-btn delete" onclick="showDeleteNationalityConfirmation('2')">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="nationality-checkbox" value="3"></td>
+              <td>3</td>
+              <td>إثيوبيا</td>
+              <td>
+                <div class="actions">
+                  <button class="action-btn edit" onclick="openNationalityForm('3')">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button class="action-btn delete" onclick="showDeleteNationalityConfirmation('3')">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <!-- Pagination -->
+        <div class="pagination">
+          <button class="pagination-btn">السابق</button>
+          <span class="pagination-info">إظهار 1-3 من أصل 3 مدخل</span>
+          <button class="pagination-btn">التالي</button>
+        </div>
+        
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyNationalitiesState" style="display: none;">
+          <i class="fas fa-flag" style="font-size: 3rem; color: #b2bec3; margin-bottom: 15px;"></i>
+          <h3>لا توجد جنسيات</h3>
+          <p>لم يتم إنشاء أي جنسيات بعد. يمكنك إنشاء جنسية جديدة بالنقر على الزر أدناه</p>
+          <button class="btn" onclick="openNationalityForm()">
+            <i class="fas fa-plus"></i> اضافة جنسية
+          </button>
+        </div>
+      `;
+      
+      // إعداد أحداث البحث
+      document.getElementById('searchNationalities').addEventListener('keyup', function() {
+        const searchTerm = this.value.toLowerCase();
+        const table = document.getElementById('nationalitiesTableBody');
+        const rows = table.getElementsByTagName('tr');
+        
+        for (let i = 0; i < rows.length; i++) {
+          const cells = rows[i].getElementsByTagName('td');
+          let match = false;
+          
+          for (let j = 1; j < cells.length - 1; j++) { // استثناء عمود التحديد وعمود الإجراءات
+            if (cells[j].textContent.toLowerCase().includes(searchTerm)) {
+              match = true;
+              break;
+            }
+          }
+          
+          rows[i].style.display = match ? '' : 'none';
+        }
+      });
+      
+      // تفعيل أزرار التحديد
+      document.getElementById('selectAllNationalities').addEventListener('change', function() {
+        const checkboxes = document.querySelectorAll('.nationality-checkbox');
+        checkboxes.forEach(checkbox => {
+          checkbox.checked = this.checked;
+        });
+        
+        // تحديث حالة أزرار الإجراءات الجماعية
+        const selectedCount = document.querySelectorAll('.nationality-checkbox:checked').length;
+        document.getElementById('selectedCount').textContent = selectedCount;
+        document.querySelector('.bulk-actions').style.display = selectedCount > 0 ? 'flex' : 'none';
+      });
+    }
+    
+    // ==========================
+    // تحميل وحدة المطارات
+    // ==========================
+    function loadAirportsModule() {
+      // عرض محتوى المطارات
+      const mainContent = document.querySelector('main');
+      mainContent.innerHTML = `
+        <h1 class="page-title">
+          <i class="fas fa-plane"></i> المطارات
+        </h1>
+        
+        <!-- Actions Bar -->
+        <div class="actions-bar">
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchAirports" placeholder="ابحث في المطارات...">
+          </div>
+          <div>
+            <button class="btn" onclick="openAirportForm()">
+              <i class="fas fa-plus"></i> اضافة مطار
+            </button>
+          </div>
+        </div>
+        
+        <!-- Bulk Actions -->
+        <div class="bulk-actions" style="display: none;">
+          <span>محدد: <strong id="selectedCount">0</strong></span>
+          <button class="btn danger" onclick="bulkDeleteAirports()">
+            <i class="fas fa-trash"></i> حذف المحدد
+          </button>
+        </div>
+        
+        <!-- Airports Table -->
+        <table id="airportsTable">
+          <thead>
+            <tr>
+              <th style="width: 50px;">
+                <input type="checkbox" id="selectAllAirports" onclick="toggleSelectAllAirports()">
+              </th>
+              <th onclick="sortAirportsTable(0)">الرقم <span class="sort-icon">⇅</span></th>
+              <th onclick="sortAirportsTable(1)">الاسم <span class="sort-icon">⇅</span></th>
+              <th>المدينة</th>
+              <th>الأمر</th>
+            </tr>
+          </thead>
+          <tbody id="airportsTableBody">
+            <tr>
+              <td><input type="checkbox" class="airport-checkbox" value="1"></td>
+              <td>1</td>
+              <td>مطار الملك خالد الدولي</td>
+              <td>الرياض</td>
+              <td>
+                <div class="actions">
+                  <button class="action-btn edit" onclick="openAirportForm('1')">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button class="action-btn delete" onclick="showDeleteAirportConfirmation('1')">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="airport-checkbox" value="2"></td>
+              <td>2</td>
+              <td>مطار الملك عبد العزيز الدولي</td>
+              <td>جدة</td>
+              <td>
+                <div class="actions">
+                  <button class="action-btn edit" onclick="openAirportForm('2')">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button class="action-btn delete" onclick="showDeleteAirportConfirmation('2')">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <!-- Pagination -->
+        <div class="pagination">
+          <button class="pagination-btn">السابق</button>
+          <span class="pagination-info">إظهار 1-2 من أصل 2 مدخل</span>
+          <button class="pagination-btn">التالي</button>
+        </div>
+        
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyAirportsState" style="display: none;">
+          <i class="fas fa-plane" style="font-size: 3rem; color: #b2bec3; margin-bottom: 15px;"></i>
+          <h3>لا توجد مطارات</h3>
+          <p>لم يتم إنشاء أي مطارات بعد. يمكنك إنشاء مطار جديد بالنقر على الزر أدناه</p>
+          <button class="btn" onclick="openAirportForm()">
+            <i class="fas fa-plus"></i> اضافة مطار
+          </button>
+        </div>
+      `;
+      
+      // إعداد أحداث البحث
+      document.getElementById('searchAirports').addEventListener('keyup', function() {
+        const searchTerm = this.value.toLowerCase();
+        const table = document.getElementById('airportsTableBody');
+        const rows = table.getElementsByTagName('tr');
+        
+        for (let i = 0; i < rows.length; i++) {
+          const cells = rows[i].getElementsByTagName('td');
+          let match = false;
+          
+          for (let j = 1; j < cells.length - 1; j++) { // استثناء عمود التحديد وعمود الإجراءات
+            if (cells[j].textContent.toLowerCase().includes(searchTerm)) {
+              match = true;
+              break;
+            }
+          }
+          
+          rows[i].style.display = match ? '' : 'none';
+        }
+      });
+    }
+    
+    // ==========================
+    // تحميل وحدة المكاتب
+    // ==========================
+    function loadOfficesModule() {
+      // عرض محتوى المكاتب
+      const mainContent = document.querySelector('main');
+      mainContent.innerHTML = `
+        <h1 class="page-title">
+          <i class="fas fa-building"></i> المكاتب
+        </h1>
+        
+        <!-- Actions Bar -->
+        <div class="actions-bar">
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchOffices" placeholder="ابحث في المكاتب...">
+          </div>
+          <div>
+            <button class="btn" onclick="openOfficeForm()">
+              <i class="fas fa-plus"></i> اضافة مكتب
+            </button>
+          </div>
+        </div>
+        
+        <!-- Bulk Actions -->
+        <div class="bulk-actions" style="display: none;">
+          <span>محدد: <strong id="selectedCount">0</strong></span>
+          <button class="btn danger" onclick="bulkDeleteOffices()">
+            <i class="fas fa-trash"></i> حذف المحدد
+          </button>
+        </div>
+        
+        <!-- Offices Table -->
+        <table id="officesTable">
+          <thead>
+            <tr>
+              <th style="width: 50px;">
+                <input type="checkbox" id="selectAllOffices" onclick="toggleSelectAllOffices()">
+              </th>
+              <th onclick="sortOfficesTable(0)">الرقم <span class="sort-icon">⇅</span></th>
+              <th onclick="sortOfficesTable(1)">الاسم <span class="sort-icon">⇅</span></th>
+              <th>النوع</th>
+              <th>العنوان</th>
+              <th>الأمر</th>
+            </tr>
+          </thead>
+          <tbody id="officesTableBody">
+            <tr>
+              <td><input type="checkbox" class="office-checkbox" value="1"></td>
+              <td>1</td>
+              <td>الفرع الرئيسي</td>
+              <td>داخلي</td>
+              <td>الرياض</td>
+              <td>
+                <div class="actions">
+                  <button class="action-btn edit" onclick="openOfficeForm('1')">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button class="action-btn delete" onclick="showDeleteOfficeConfirmation('1')">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="office-checkbox" value="2"></td>
+              <td>2</td>
+              <td>فرع جدة</td>
+              <td>داخلي</td>
+              <td>جدة</td>
+              <td>
+                <div class="actions">
+                  <button class="action-btn edit" onclick="openOfficeForm('2')">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button class="action-btn delete" onclick="showDeleteOfficeConfirmation('2')">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <!-- Pagination -->
+        <div class="pagination">
+          <button class="pagination-btn">السابق</button>
+          <span class="pagination-info">إظهار 1-2 من أصل 2 مدخل</span>
+          <button class="pagination-btn">التالي</button>
+        </div>
+        
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyOfficesState" style="display: none;">
+          <i class="fas fa-building" style="font-size: 3rem; color: #b2bec3; margin-bottom: 15px;"></i>
+          <h3>لا توجد مكاتب</h3>
+          <p>لم يتم إنشاء أي مكاتب بعد. يمكنك إنشاء مكتب جديد بالنقر على الزر أدناه</p>
+          <button class="btn" onclick="openOfficeForm()">
+            <i class="fas fa-plus"></i> اضافة مكتب
+          </button>
+        </div>
+      `;
+      
+      // إعداد أحداث البحث
+      document.getElementById('searchOffices').addEventListener('keyup', function() {
+        const searchTerm = this.value.toLowerCase();
+        const table = document.getElementById('officesTableBody');
+        const rows = table.getElementsByTagName('tr');
+        
+        for (let i = 0; i < rows.length; i++) {
+          const cells = rows[i].getElementsByTagName('td');
+          let match = false;
+          
+          for (let j = 1; j < cells.length - 1; j++) { // استثناء عمود التحديد وعمود الإجراءات
+            if (cells[j].textContent.toLowerCase().includes(searchTerm)) {
+              match = true;
+              break;
+            }
+          }
+          
+          rows[i].style.display = match ? '' : 'none';
+        }
+      });
+    }
+    
+    // ==========================
+    // تحميل وحدة المهنة
+    // ==========================
+    function loadProfessionsModule() {
+      // عرض محتوى المهنة
+      const mainContent = document.querySelector('main');
+      mainContent.innerHTML = `
+        <h1 class="page-title">
+          <i class="fas fa-briefcase"></i> المهن
+        </h1>
+        
+        <!-- Actions Bar -->
+        <div class="actions-bar">
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchProfessions" placeholder="ابحث في المهن...">
+          </div>
+          <div>
+            <button class="btn" onclick="openProfessionForm()">
+              <i class="fas fa-plus"></i> اضافة مهنة
+            </button>
+          </div>
+        </div>
+        
+        <!-- Bulk Actions -->
+        <div class="bulk-actions" style="display: none;">
+          <span>محدد: <strong id="selectedCount">0</strong></span>
+          <button class="btn danger" onclick="bulkDeleteProfessions()">
+            <i class="fas fa-trash"></i> حذف المحدد
+          </button>
+        </div>
+        
+        <!-- Professions Table -->
+        <table id="professionsTable">
+          <thead>
+            <tr>
+              <th style="width: 50px;">
+                <input type="checkbox" id="selectAllProfessions" onclick="toggleSelectAllProfessions()">
+              </th>
+              <th onclick="sortProfessionsTable(0)">الرقم <span class="sort-icon">⇅</span></th>
+              <th onclick="sortProfessionsTable(1)">الاسم <span class="sort-icon">⇅</span></th>
+              <th>الفئة</th>
+              <th>الأمر</th>
+            </tr>
+          </thead>
+          <tbody id="professionsTableBody">
+            <tr>
+              <td><input type="checkbox" class="profession-checkbox" value="1"></td>
+              <td>1</td>
+              <td>سائق</td>
+              <td>نقل</td>
+              <td>
+                <div class="actions">
+                  <button class="action-btn edit" onclick="openProfessionForm('1')">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button class="action-btn delete" onclick="showDeleteProfessionConfirmation('1')">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="profession-checkbox" value="2"></td>
+              <td>2</td>
+              <td>خادم</td>
+              <td>منزلي</td>
+              <td>
+                <div class="actions">
+                  <button class="action-btn edit" onclick="openProfessionForm('2')">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button class="action-btn delete" onclick="showDeleteProfessionConfirmation('2')">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <!-- Pagination -->
+        <div class="pagination">
+          <button class="pagination-btn">السابق</button>
+          <span class="pagination-info">إظهار 1-2 من أصل 2 مدخل</span>
+          <button class="pagination-btn">التالي</button>
+        </div>
+        
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyProfessionsState" style="display: none;">
+          <i class="fas fa-briefcase" style="font-size: 3rem; color: #b2bec3; margin-bottom: 15px;"></i>
+          <h3>لا توجد مهن</h3>
+          <p>لم يتم إنشاء أي مهن بعد. يمكنك إنشاء مهنة جديدة بالنقر على الزر أدناه</p>
+          <button class="btn" onclick="openProfessionForm()">
+            <i class="fas fa-plus"></i> اضافة مهنة
+          </button>
+        </div>
+      `;
+      
+      // إعداد أحداث البحث
+      document.getElementById('searchProfessions').addEventListener('keyup', function() {
+        const searchTerm = this.value.toLowerCase();
+        const table = document.getElementById('professionsTableBody');
+        const rows = table.getElementsByTagName('tr');
+        
+        for (let i = 0; i < rows.length; i++) {
+          const cells = rows[i].getElementsByTagName('td');
+          let match = false;
+          
+          for (let j = 1; j < cells.length - 1; j++) { // استثناء عمود التحديد وعمود الإجراءات
+            if (cells[j].textContent.toLowerCase().includes(searchTerm)) {
+              match = true;
+              break;
+            }
+          }
+          
+          rows[i].style.display = match ? '' : 'none';
+        }
+      });
+    }
+    
+    // ==========================
+    // البيانات الأساسية للصلاحيات
+    // ==========================
+    let roles = JSON.parse(localStorage.getItem('roles')) || [
+      {
+        id: '6',
+        name: 'super-admin',
+        permissions: {
+          // العاملين
+          'add-worker': true,
+          'edit-worker': true,
+          'view-worker': true,
+          'delete-worker': true,
+          
+          // نوع الإيواء
+          'view-accommodation-type': true,
+          'create-accommodation-type': true,
+          'edit-accommodation-type': true,
+          'delete-accommodation-type': true,
+          
+          // الإيواء
+          'view-accommodation': true,
+          'create-accommodation': true,
+          'edit-accommodation': true,
+          'delete-accommodation': true,
+          
+          // سجل النشاط
+          'view-activity-log': true,
+          'create-activity-log': true,
+          'edit-activity-log': true,
+          'delete-activity-log': true,
+          
+          // المطارات
+          'view-airport': true,
+          'create-airport': true,
+          'edit-airport': true,
+          'delete-airport': true,
+          
+          // مصدر العقد
+          'view-contract-source': true,
+          'create-contract-source': true,
+          'edit-contract-source': true,
+          'delete-contract-source': true,
+          
+          // مركز التكلفة
+          'view-cost-center': true,
+          'create-cost-center': true,
+          'edit-cost-center': true,
+          'delete-cost-center': true,
+          
+          // الدولة
+          'view-country': true,
+          'create-country': true,
+          'edit-country': true,
+          'delete-country': true,
+          
+          // العملة
+          'view-currency': true,
+          'create-currency': true,
+          'edit-currency': true,
+          'delete-currency': true,
+          
+          // العميل
+          'view-client': true,
+          'create-client': true,
+          'edit-client': true,
+          'delete-client': true,
+          'approve-contract': true,
+          'user-status': true,
+          
+          // الحالة
+          'view-status': true,
+          'create-status': true,
+          'edit-status': true,
+          'delete-status': true,
+          
+          // العقد
+          'view-contract': true,
+          'create-contract': true,
+          'edit-contract': true,
+          'delete-contract': true,
+          
+          // السيرة الذاتية
+          'view-cv': true,
+          'create-cv': true,
+          'edit-cv': true,
+          'delete-cv': true,
+          
+          // الفاتورة
+          'view-invoice': true,
+          'create-invoice': true,
+          'edit-invoice': true,
+          'delete-invoice': true,
+          
+          // الدفع
+          'view-payment': true,
+          'create-payment': true,
+          'edit-payment': true,
+          'delete-payment': true,
+          
+          // التقارير
+          'report-cv': true,
+          'report-user': true,
+          'report-contract': true,
+          'report-tickets': true,
+          'report-invoices': true,
+          'report-arrivals': true,
+          
+          // المسوق
+          'view-marketer': true,
+          'create-marketer': true,
+          'edit-marketer': true,
+          'delete-marketer': true,
+          
+          // الجنسية
+          'view-nationality': true,
+          'create-nationality': true,
+          'edit-nationality': true,
+          'delete-nationality': true,
+          
+          // المكتب
+          'view-office': true,
+          'create-office': true,
+          'edit-office': true,
+          'delete-office': true,
+          
+          // المهنة
+          'view-profession': true,
+          'create-profession': true,
+          'edit-profession': true,
+          'delete-profession': true,
+          
+          // المؤهلات والخبرة
+          'view-qualifications': true,
+          'create-qualifications': true,
+          'edit-qualifications': true,
+          'delete-qualifications': true,
+          
+          // الترحيل
+          'view-relocation': true,
+          'create-relocation': true,
+          'edit-relocation': true,
+          'delete-relocation': true,
+          
+          // الديانة
+          'view-religion': true,
+          'create-religion': true,
+          'edit-religion': true,
+          'delete-religion': true,
+          
+          // طلب الإيجار
+          'view-rental-request': true,
+          'create-rental-request': true,
+          'edit-rental-request': true,
+          'delete-rental-request': true,
+          
+          // جميع الشكاوي
+          'view-all-tickets': true,
+          
+          // الحالة
+          'view-ticket-status': true,
+          'create-ticket-status': true,
+          'edit-ticket-status': true,
+          'delete-ticket-status': true,
+          
+          // الشروط والمزايا
+          'view-terms': true,
+          'create-terms': true,
+          'edit-terms': true,
+          'delete-terms': true,
+          
+          // طلب نقل الكفالة
+          'view-transfer-request': true,
+          'create-transfer-request': true,
+          'edit-transfer-request': true,
+          'delete-transfer-request': true,
+          
+          // نوع التأشيرة
+          'view-visa-type': true,
+          'create-visa-type': true,
+          'edit-visa-type': true,
+          'delete-visa-type': true,
+          
+          // الشكاوي الخاصة بي
+          'view-my-tickets': true,
+          
+          // الإعدادات
+          'settings': true
+        }
+      },
+      {
+        id: '8',
+        name: 'موظف وكالة خارجية',
+        permissions: {
+          // العاملين
+          'add-worker': true,
+          'edit-worker': true,
+          'view-worker': true,
+          'delete-worker': false,
+          
+          // نوع الإيواء
+          'view-accommodation-type': true,
+          'create-accommodation-type': false,
+          'edit-accommodation-type': false,
+          'delete-accommodation-type': false,
+          
+          // الإيواء
+          'view-accommodation': true,
+          'create-accommodation': false,
+          'edit-accommodation': false,
+          'delete-accommodation': false,
+          
+          // سجل النشاط
+          'view-activity-log': false,
+          'create-activity-log': false,
+          'edit-activity-log': false,
+          'delete-activity-log': false,
+          
+          // المطارات
+          'view-airport': true,
+          'create-airport': false,
+          'edit-airport': false,
+          'delete-airport': false,
+          
+          // مصدر العقد
+          'view-contract-source': true,
+          'create-contract-source': false,
+          'edit-contract-source': false,
+          'delete-contract-source': false,
+          
+          // مركز التكلفة
+          'view-cost-center': false,
+          'create-cost-center': false,
+          'edit-cost-center': false,
+          'delete-cost-center': false,
+          
+          // الدولة
+          'view-country': true,
+          'create-country': false,
+          'edit-country': false,
+          'delete-country': false,
+          
+          // العملة
+          'view-currency': false,
+          'create-currency': false,
+          'edit-currency': false,
+          'delete-currency': false,
+          
+          // العميل
+          'view-client': true,
+          'create-client': true,
+          'edit-client': true,
+          'delete-client': false,
+          'approve-contract': false,
+          'user-status': false,
+          
+          // الحالة
+          'view-status': true,
+          'create-status': false,
+          'edit-status': false,
+          'delete-status': false,
+          
+          // العقد
+          'view-contract': true,
+          'create-contract': true,
+          'edit-contract': true,
+          'delete-contract': false,
+          
+          // السيرة الذاتية
+          'view-cv': true,
+          'create-cv': true,
+          'edit-cv': true,
+          'delete-cv': false,
+          
+          // الفاتورة
+          'view-invoice': false,
+          'create-invoice': false,
+          'edit-invoice': false,
+          'delete-invoice': false,
+          
+          // الدفع
+          'view-payment': false,
+          'create-payment': false,
+          'edit-payment': false,
+          'delete-payment': false,
+          
+          // التقارير
+          'report-cv': true,
+          'report-user': false,
+          'report-contract': true,
+          'report-tickets': true,
+          'report-invoices': false,
+          'report-arrivals': true,
+          
+          // المسوق
+          'view-marketer': true,
+          'create-marketer': false,
+          'edit-marketer': false,
+          'delete-marketer': false,
+          
+          // الجنسية
+          'view-nationality': true,
+          'create-nationality': false,
+          'edit-nationality': false,
+          'delete-nationality': false,
+          
+          // المكتب
+          'view-office': true,
+          'create-office': false,
+          'edit-office': false,
+          'delete-office': false,
+          
+          // المهنة
+          'view-profession': true,
+          'create-profession': false,
+          'edit-profession': false,
+          'delete-profession': false,
+          
+          // المؤهلات والخبرة
+          'view-qualifications': true,
+          'create-qualifications': false,
+          'edit-qualifications': false,
+          'delete-qualifications': false,
+          
+          // الترحيل
+          'view-relocation': true,
+          'create-relocation': true,
+          'edit-relocation': true,
+          'delete-relocation': false,
+          
+          // الديانة
+          'view-religion': true,
+          'create-religion': false,
+          'edit-religion': false,
+          'delete-religion': false,
+          
+          // طلب الإيجار
+          'view-rental-request': false,
+          'create-rental-request': false,
+          'edit-rental-request': false,
+          'delete-rental-request': false,
+          
+          // جميع الشكاوي
+          'view-all-tickets': false,
+          
+          // الحالة
+          'view-ticket-status': true,
+          'create-ticket-status': false,
+          'edit-ticket-status': false,
+          'delete-ticket-status': false,
+          
+          // الشروط والمزايا
+          'view-terms': true,
+          'create-terms': false,
+          'edit-terms': false,
+          'delete-terms': false,
+          
+          // طلب نقل الكفالة
+          'view-transfer-request': true,
+          'create-transfer-request': true,
+          'edit-transfer-request': true,
+          'delete-transfer-request': false,
+          
+          // نوع التأشيرة
+          'view-visa-type': true,
+          'create-visa-type': false,
+          'edit-visa-type': false,
+          'delete-visa-type': false,
+          
+          // الشكاوي الخاصة بي
+          'view-my-tickets': true,
+          
+          // الإعدادات
+          'settings': false
+        }
+      },
+      {
+        id: '9',
+        name: 'نائب المدير',
+        permissions: {
+          // العاملين
+          'add-worker': true,
+          'edit-worker': true,
+          'view-worker': true,
+          'delete-worker': true,
+          
+          // نوع الإيواء
+          'view-accommodation-type': true,
+          'create-accommodation-type': true,
+          'edit-accommodation-type': true,
+          'delete-accommodation-type': false,
+          
+          // الإيواء
+          'view-accommodation': true,
+          'create-accommodation': true,
+          'edit-accommodation': true,
+          'delete-accommodation': false,
+          
+          // سجل النشاط
+          'view-activity-log': true,
+          'create-activity-log': false,
+          'edit-activity-log': false,
+          'delete-activity-log': false,
+          
+          // المطارات
+          'view-airport': true,
+          'create-airport': true,
+          'edit-airport': true,
+          'delete-airport': false,
+          
+          // مصدر العقد
+          'view-contract-source': true,
+          'create-contract-source': true,
+          'edit-contract-source': true,
+          'delete-contract-source': false,
+          
+          // مركز التكلفة
+          'view-cost-center': true,
+          'create-cost-center': true,
+          'edit-cost-center': true,
+          'delete-cost-center': false,
+          
+          // الدولة
+          'view-country': true,
+          'create-country': true,
+          'edit-country': true,
+          'delete-country': false,
+          
+          // العملة
+          'view-currency': true,
+          'create-currency': true,
+          'edit-currency': true,
+          'delete-currency': false,
+          
+          // العميل
+          'view-client': true,
+          'create-client': true,
+          'edit-client': true,
+          'delete-client': true,
+          'approve-contract': true,
+          'user-status': true,
+          
+          // الحالة
+          'view-status': true,
+          'create-status': true,
+          'edit-status': true,
+          'delete-status': false,
+          
+          // العقد
+          'view-contract': true,
+          'create-contract': true,
+          'edit-contract': true,
+          'delete-contract': true,
+          
+          // السيرة الذاتية
+          'view-cv': true,
+          'create-cv': true,
+          'edit-cv': true,
+          'delete-cv': true,
+          
+          // الفاتورة
+          'view-invoice': true,
+          'create-invoice': true,
+          'edit-invoice': true,
+          'delete-invoice': true,
+          
+          // الدفع
+          'view-payment': true,
+          'create-payment': true,
+          'edit-payment': true,
+          'delete-payment': true,
+          
+          // التقارير
+          'report-cv': true,
+          'report-user': true,
+          'report-contract': true,
+          'report-tickets': true,
+          'report-invoices': true,
+          'report-arrivals': true,
+          
+          // المسوق
+          'view-marketer': true,
+          'create-marketer': true,
+          'edit-marketer': true,
+          'delete-marketer': false,
+          
+          // الجنسية
+          'view-nationality': true,
+          'create-nationality': true,
+          'edit-nationality': true,
+          'delete-nationality': false,
+          
+          // المكتب
+          'view-office': true,
+          'create-office': true,
+          'edit-office': true,
+          'delete-office': false,
+          
+          // المهنة
+          'view-profession': true,
+          'create-profession': true,
+          'edit-profession': true,
+          'delete-profession': false,
+          
+          // المؤهلات والخبرة
+          'view-qualifications': true,
+          'create-qualifications': true,
+          'edit-qualifications': true,
+          'delete-qualifications': false,
+          
+          // الترحيل
+          'view-relocation': true,
+          'create-relocation': true,
+          'edit-relocation': true,
+          'delete-relocation': false,
+          
+          // الديانة
+          'view-religion': true,
+          'create-religion': true,
+          'edit-religion': true,
+          'delete-religion': false,
+          
+          // طلب الإيجار
+          'view-rental-request': true,
+          'create-rental-request': true,
+          'edit-rental-request': true,
+          'delete-rental-request': false,
+          
+          // جميع الشكاوي
+          'view-all-tickets': true,
+          
+          // الحالة
+          'view-ticket-status': true,
+          'create-ticket-status': true,
+          'edit-ticket-status': true,
+          'delete-ticket-status': false,
+          
+          // الشروط والمزايا
+          'view-terms': true,
+          'create-terms': true,
+          'edit-terms': true,
+          'delete-terms': false,
+          
+          // طلب نقل الكفالة
+          'view-transfer-request': true,
+          'create-transfer-request': true,
+          'edit-transfer-request': true,
+          'delete-transfer-request': false,
+          
+          // نوع التأشيرة
+          'view-visa-type': true,
+          'create-visa-type': true,
+          'edit-visa-type': true,
+          'delete-visa-type': false,
+          
+          // الشكاوي الخاصة بي
+          'view-my-tickets': true,
+          
+          // الإعدادات
+          'settings': true
+        }
+      },
+      {
+        id: '11',
+        name: 'موظفو المكتب',
+        permissions: {
+          // العاملين
+          'add-worker': true,
+          'edit-worker': true,
+          'view-worker': true,
+          'delete-worker': false,
+          
+          // نوع الإيواء
+          'view-accommodation-type': true,
+          'create-accommodation-type': false,
+          'edit-accommodation-type': false,
+          'delete-accommodation-type': false,
+          
+          // الإيواء
+          'view-accommodation': true,
+          'create-accommodation': false,
+          'edit-accommodation': false,
+          'delete-accommodation': false,
+          
+          // سجل النشاط
+          'view-activity-log': false,
+          'create-activity-log': false,
+          'edit-activity-log': false,
+          'delete-activity-log': false,
+          
+          // المطارات
+          'view-airport': true,
+          'create-airport': false,
+          'edit-airport': false,
+          'delete-airport': false,
+          
+          // مصدر العقد
+          'view-contract-source': true,
+          'create-contract-source': false,
+          'edit-contract-source': false,
+          'delete-contract-source': false,
+          
+          // مركز التكلفة
+          'view-cost-center': false,
+          'create-cost-center': false,
+          'edit-cost-center': false,
+          'delete-cost-center': false,
+          
+          // الدولة
+          'view-country': true,
+          'create-country': false,
+          'edit-country': false,
+          'delete-country': false,
+          
+          // العملة
+          'view-currency': false,
+          'create-currency': false,
+          'edit-currency': false,
+          'delete-currency': false,
+          
+          // العميل
+          'view-client': true,
+          'create-client': true,
+          'edit-client': true,
+          'delete-client': false,
+          'approve-contract': false,
+          'user-status': false,
+          
+          // الحالة
+          'view-status': true,
+          'create-status': false,
+          'edit-status': false,
+          'delete-status': false,
+          
+          // العقد
+          'view-contract': true,
+          'create-contract': true,
+          'edit-contract': true,
+          'delete-contract': false,
+          
+          // السيرة الذاتية
+          'view-cv': true,
+          'create-cv': true,
+          'edit-cv': true,
+          'delete-cv': false,
+          
+          // الفاتورة
+          'view-invoice': false,
+          'create-invoice': false,
+          'edit-invoice': false,
+          'delete-invoice': false,
+          
+          // الدفع
+          'view-payment': false,
+          'create-payment': false,
+          'edit-payment': false,
+          'delete-payment': false,
+          
+          // التقارير
+          'report-cv': true,
+          'report-user': false,
+          'report-contract': true,
+          'report-tickets': true,
+          'report-invoices': false,
+          'report-arrivals': true,
+          
+          // المسوق
+          'view-marketer': true,
+          'create-marketer': false,
+          'edit-marketer': false,
+          'delete-marketer': false,
+          
+          // الجنسية
+          'view-nationality': true,
+          'create-nationality': false,
+          'edit-nationality': false,
+          'delete-nationality': false,
+          
+          // المكتب
+          'view-office': true,
+          'create-office': false,
+          'edit-office': false,
+          'delete-office': false,
+          
+          // المهنة
+          'view-profession': true,
+          'create-profession': false,
+          'edit-profession': false,
+          'delete-profession': false,
+          
+          // المؤهلات والخبرة
+          'view-qualifications': true,
+          'create-qualifications': false,
+          'edit-qualifications': false,
+          'delete-qualifications': false,
+          
+          // الترحيل
+          'view-relocation': true,
+          'create-relocation': true,
+          'edit-relocation': true,
+          'delete-relocation': false,
+          
+          // الديانة
+          'view-religion': true,
+          'create-religion': false,
+          'edit-religion': false,
+          'delete-religion': false,
+          
+          // طلب الإيجار
+          'view-rental-request': false,
+          'create-rental-request': false,
+          'edit-rental-request': false,
+          'delete-rental-request': false,
+          
+          // جميع الشكاوي
+          'view-all-tickets': false,
+          
+          // الحالة
+          'view-ticket-status': true,
+          'create-ticket-status': false,
+          'edit-ticket-status': false,
+          'delete-ticket-status': false,
+          
+          // الشروط والمزايا
+          'view-terms': true,
+          'create-terms': false,
+          'edit-terms': false,
+          'delete-terms': false,
+          
+          // طلب نقل الكفالة
+          'view-transfer-request': true,
+          'create-transfer-request': true,
+          'edit-transfer-request': true,
+          'delete-transfer-request': false,
+          
+          // نوع التأشيرة
+          'view-visa-type': true,
+          'create-visa-type': false,
+          'edit-visa-type': false,
+          'delete-visa-type': false,
+          
+          // الشكاوي الخاصة بي
+          'view-my-tickets': true,
+          
+          // الإعدادات
+          'settings': false
+        }
+      }
+    ];
+    
+    let currentRoleID = null;
+    let currentCategory = 'all';
+    let currentAction = null;
+    let selectedRoles = [];
+    
+    let permissionsData = [
+      {
+        id: 'workers',
+        name: 'العاملين',
+        permissions: [
+          { id: 'add-worker', name: 'اضافة عامل' },
+          { id: 'edit-worker', name: 'تعديل عامل' },
+          { id: 'view-worker', name: 'رؤية عامل' },
+          { id: 'delete-worker', name: 'مسح عامل' }
+        ]
+      },
+      {
+        id: 'accommodation',
+        name: 'الإيواء',
+        permissions: [
+          { id: 'view-accommodation-type', name: 'عرض نوع الايواء' },
+          { id: 'create-accommodation-type', name: 'إنشاء نوع الايواء' },
+          { id: 'edit-accommodation-type', name: 'التعديل على نوع الايواء' },
+          { id: 'delete-accommodation-type', name: 'حذف نوع الايواء' },
+          { id: 'view-accommodation', name: 'عرض الايواء' },
+          { id: 'create-accommodation', name: 'إنشاء الايواء' },
+          { id: 'edit-accommodation', name: 'تعديل الايواء' },
+          { id: 'delete-accommodation', name: 'حذف الايواء' }
+        ]
+      },
+      {
+        id: 'activity',
+        name: 'سجل النشاط',
+        permissions: [
+          { id: 'view-activity-log', name: 'عرض سجل النشاط' },
+          { id: 'create-activity-log', name: 'إنشاء سجل النشاط' },
+          { id: 'edit-activity-log', name: 'تحرير سجل النشاط' },
+          { id: 'delete-activity-log', name: 'حذف سجل النشاط' }
+        ]
+      },
+      {
+        id: 'airports',
+        name: 'المطارات',
+        permissions: [
+          { id: 'view-airport', name: 'عرض المطار' },
+          { id: 'create-airport', name: 'إنشاء مطار' },
+          { id: 'edit-airport', name: 'تعديل المطار' },
+          { id: 'delete-airport', name: 'حذف المطار' }
+        ]
+      },
+      {
+        id: 'contract-source',
+        name: 'مصدر العقد',
+        permissions: [
+          { id: 'view-contract-source', name: 'عرض مصدر العقد' },
+          { id: 'create-contract-source', name: 'إنشاء مصدر العقد' },
+          { id: 'edit-contract-source', name: 'تحرير مصدر العقد' },
+          { id: 'delete-contract-source', name: 'حذف مصدر العقد' }
+        ]
+      },
+      {
+        id: 'cost-center',
+        name: 'مركز التكلفة',
+        permissions: [
+          { id: 'view-cost-center', name: 'عرض مركز التكلفة' },
+          { id: 'create-cost-center', name: 'إنشاء مركز تكلفة' },
+          { id: 'edit-cost-center', name: 'تحرير مركز التكلفة' },
+          { id: 'delete-cost-center', name: 'حذف مركز التكلفة' }
+        ]
+      },
+      {
+        id: 'countries',
+        name: 'الدولة',
+        permissions: [
+          { id: 'view-country', name: 'عرض الدولة' },
+          { id: 'create-country', name: 'إنشاء دولة' },
+          { id: 'edit-country', name: 'تحرير الدولة' },
+          { id: 'delete-country', name: 'حذف الدولة' }
+        ]
+      },
+      {
+        id: 'currency',
+        name: 'العملة',
+        permissions: [
+          { id: 'view-currency', name: 'عرض العملة' },
+          { id: 'create-currency', name: 'إنشاء عملة' },
+          { id: 'edit-currency', name: 'تحرير العملة' },
+          { id: 'delete-currency', name: 'حذف العملة' }
+        ]
+      },
+      {
+        id: 'clients',
+        name: 'العميل',
+        permissions: [
+          { id: 'view-client', name: 'عرض العميل' },
+          { id: 'create-client', name: 'إنشاء عميل' },
+          { id: 'edit-client', name: 'تحرير العميل' },
+          { id: 'delete-client', name: 'حذف العميل' },
+          { id: 'approve-contract', name: 'الموافقه علي عقد' },
+          { id: 'user-status', name: 'حالة المستخدم' }
+        ]
+      },
+      {
+        id: 'status',
+        name: 'الحالة',
+        permissions: [
+          { id: 'view-status', name: 'عرض الحالة' },
+          { id: 'create-status', name: 'انشاء حالة' },
+          { id: 'edit-status', name: 'تعديل حالة' },
+          { id: 'delete-status', name: 'مسح حالة' }
+        ]
+      },
+      {
+        id: 'contracts',
+        name: 'العقد',
+        permissions: [
+          { id: 'view-contract', name: 'عرض العقد' },
+          { id: 'create-contract', name: 'إنشاء عقد' },
+          { id: 'edit-contract', name: 'تحرير العقد' },
+          { id: 'delete-contract', name: 'حذف العقد' }
+        ]
+      },
+      {
+        id: 'cv',
+        name: 'السيرة الذاتية',
+        permissions: [
+          { id: 'view-cv', name: 'عرض السيرةالذاتية' },
+          { id: 'create-cv', name: 'إنشاء السيرة الذاتية' },
+          { id: 'edit-cv', name: 'تحرير السيرةالذاتية' },
+          { id: 'delete-cv', name: 'حذف السيرةالذاتية' }
+        ]
+      },
+      {
+        id: 'invoices',
+        name: 'الفاتورة',
+        permissions: [
+          { id: 'view-invoice', name: 'عرض الفاتورة' },
+          { id: 'create-invoice', name: 'إنشاء فاتورة' },
+          { id: 'edit-invoice', name: 'تحرير الفاتورة' },
+          { id: 'delete-invoice', name: 'حذف الفاتورة' }
+        ]
+      },
+      {
+        id: 'payments',
+        name: 'الدفع',
+        permissions: [
+          { id: 'view-payment', name: 'عرض الدفع' },
+          { id: 'create-payment', name: 'إنشاء الدفع' },
+          { id: 'edit-payment', name: 'تحرير الدفع' },
+          { id: 'delete-payment', name: 'حذف الدفعة' }
+        ]
+      },
+      {
+        id: 'reports',
+        name: 'التقارير',
+        permissions: [
+          { id: 'report-cv', name: 'تقرير السيرة الذاتيه' },
+          { id: 'report-user', name: 'تقرير المستخدم' },
+          { id: 'report-contract', name: 'تقرير العقد' },
+          { id: 'report-tickets', name: 'تقرير الشكاوي' },
+          { id: 'report-invoices', name: 'تقرير الفواتير' },
+          { id: 'report-arrivals', name: 'تقرير الوصول' }
+        ]
+      },
+      {
+        id: 'marketers',
+        name: 'المسوق',
+        permissions: [
+          { id: 'view-marketer', name: 'عرض المسوق' },
+          { id: 'create-marketer', name: 'إنشاء المسوق' },
+          { id: 'edit-marketer', name: 'تحرير المسوق' },
+          { id: 'delete-marketer', name: 'حذف المسوق' }
+        ]
+      },
+      {
+        id: 'nationality',
+        name: 'الجنسية',
+        permissions: [
+          { id: 'view-nationality', name: 'عرض الجنسية' },
+          { id: 'create-nationality', name: 'إنشاء الجنسية' },
+          { id: 'edit-nationality', name: 'تحرير الجنسية' },
+          { id: 'delete-nationality', name: 'حذف الجنسية' }
+        ]
+      },
+      {
+        id: 'offices',
+        name: 'المكتب',
+        permissions: [
+          { id: 'view-office', name: 'عرض المكتب' },
+          { id: 'create-office', name: 'إنشاء مكتب' },
+          { id: 'edit-office', name: 'تحرير المكتب' },
+          { id: 'delete-office', name: 'حذف المكتب' }
+        ]
+      },
+      {
+        id: 'profession',
+        name: 'المهنة',
+        permissions: [
+          { id: 'view-profession', name: 'عرض المهنة' },
+          { id: 'create-profession', name: 'إنشاء مهنة' },
+          { id: 'edit-profession', name: 'تحرير المهنة' },
+          { id: 'delete-profession', name: 'حذف المهنة' }
+        ]
+      },
+      {
+        id: 'qualifications',
+        name: 'المؤهلات والخبرة',
+        permissions: [
+          { id: 'view-qualifications', name: 'عرض المؤهلات والخبرة' },
+          { id: 'create-qualifications', name: 'إنشاء المؤهلات والخبرة' },
+          { id: 'edit-qualifications', name: 'تحرير المؤهلات والخبرة' },
+          { id: 'delete-qualifications', name: 'حذف المؤهلات والخبرة' }
+        ]
+      },
+      {
+        id: 'relocation',
+        name: 'الترحيل',
+        permissions: [
+          { id: 'view-relocation', name: 'عرض الترحيل' },
+          { id: 'create-relocation', name: 'إنشاء الترحيل' },
+          { id: 'edit-relocation', name: 'تحرير الترحيل' },
+          { id: 'delete-relocation', name: 'حذف الترحيل' }
+        ]
+      },
+      {
+        id: 'religion',
+        name: 'الديانة',
+        permissions: [
+          { id: 'view-religion', name: 'عرض الديانة' },
+          { id: 'create-religion', name: 'إنشاء الديانة' },
+          { id: 'edit-religion', name: 'تحرير الديانة' },
+          { id: 'delete-religion', name: 'حذف الديانة' }
+        ]
+      },
+      {
+        id: 'rental',
+        name: 'طلب الإيجار',
+        permissions: [
+          { id: 'view-rental-request', name: 'عرض طلب إيجار' },
+          { id: 'create-rental-request', name: 'إنشاء طلب إيجار' },
+          { id: 'edit-rental-request', name: 'تحرير طلب إيجار' },
+          { id: 'delete-rental-request', name: 'حذف طلب إيجار' }
+        ]
+      },
+      {
+        id: 'tickets',
+        name: 'الشكاوي',
+        permissions: [
+          { id: 'view-all-tickets', name: 'ظهور جميع الشكاوي' },
+          { id: 'create-ticket', name: 'انشاء تذكره' },
+          { id: 'view-ticket-status', name: 'عرض الحالة' },
+          { id: 'create-ticket-status', name: 'إنشاء الحالة' },
+          { id: 'edit-ticket-status', name: 'تحرير الحالة' },
+          { id: 'delete-ticket-status', name: 'حذف الحالة' },
+          { id: 'view-my-tickets', name: 'ظهور الشكاوي الخاصه بي' }
+        ]
+      },
+      {
+        id: 'terms',
+        name: 'الشروط والمزايا',
+        permissions: [
+          { id: 'view-terms', name: 'عرض الشروط والمزايا' },
+          { id: 'create-terms', name: 'إنشاء الشروط والمزايا' },
+          { id: 'edit-terms', name: 'تحرير الشروط والمزايا' },
+          { id: 'delete-terms', name: 'حذف الشروط والمزايا' }
+        ]
+      },
+      {
+        id: 'transfer',
+        name: 'نقل الكفالة',
+        permissions: [
+          { id: 'view-transfer-request', name: 'عرض طلب نقل كفالة' },
+          { id: 'create-transfer-request', name: 'إنشاء طلب نقل كفالة' },
+          { id: 'edit-transfer-request', name: 'تحرير طلب نقل كفالة' },
+          { id: 'delete-transfer-request', name: 'حذف طلب نقل كفالة' }
+        ]
+      },
+      {
+        id: 'visa',
+        name: 'نوع التأشيرة',
+        permissions: [
+          { id: 'view-visa-type', name: 'عرض نوع التأشيرة' },
+          { id: 'create-visa-type', name: 'إنشاء نوع التأشيرة' },
+          { id: 'edit-visa-type', name: 'تحرير نوع التأشيرة' },
+          { id: 'delete-visa-type', name: 'حذف نوع التأشيرة' }
+        ]
+      },
+      {
+        id: 'settings',
+        name: 'الإعدادات',
+        permissions: [
+          { id: 'settings', name: 'الاعدادات' }
+        ]
+      }
+    ];
+
+    // ==========================
+    // إظهار رسالة نجاح (Toast)
+    // ==========================
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.className = 'toast'; // إعادة تعيين الفئات
+      toast.classList.add(type); // إضافة فئة النوع
+      
+      setTimeout(() => {
+        toast.classList.add('show');
+        setTimeout(() => {
+          toast.classList.remove('show');
+          setTimeout(() => toast.className = 'toast', 300);
+        }, 3000);
+      }, 10);
+    }
+
+    // ==========================
+    // ترتيب الجدول
+    // ==========================
+    let sortColumn = -1;
+    let sortDirection = 'asc';
+    
+    function sortTable(column) {
+      if (sortColumn === column) {
+        sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+      } else {
+        sortColumn = column;
+        sortDirection = 'asc';
+      }
+      
+      // تحديث أيقونة الترتيب
+      document.querySelectorAll('th').forEach((th, i) => {
+        th.classList.remove('asc', 'desc');
+        if (i === column) {
+          th.classList.add(sortDirection);
+        }
+      });
+      
+      // إعادة ترتيب البيانات
+      roles.sort((a, b) => {
+        let aValue, bValue;
+        
+        switch(column) {
+          case 1: // الرقم
+            aValue = a.id;
+            bValue = b.id;
+            break;
+          case 2: // الاسم
+            aValue = a.name;
+            bValue = b.name;
+            break;
+          default:
+            aValue = '';
+            bValue = '';
+        }
+        
+        // محاولة تحويل القيم إلى أرقام إذا كانت أرقامًا
+        const aNum = parseFloat(aValue);
+        const bNum = parseFloat(bValue);
+        
+        if (!isNaN(aNum) && !isNaN(bNum)) {
+          return sortDirection === 'asc' ? aNum - bNum : bNum - aNum;
+        }
+        
+        return sortDirection === 'asc' ? 
+          aValue.localeCompare(bValue) : 
+          bValue.localeCompare(aValue);
+      });
+      
+      // تحديث الجدول
+      renderRolesTable();
+    }
+
+    // ==========================
+    // عرض جدول الصلاحيات
+    // ==========================
+    function renderRolesTable() {
+      const tableBody = document.getElementById('rolesTableBody');
+      tableBody.innerHTML = '';
+      
+      if (roles.length === 0) {
+        document.getElementById('emptyState').style.display = 'block';
+        document.querySelector('.bulk-actions').style.display = 'none';
+        return;
+      }
+      
+      document.getElementById('emptyState').style.display = 'none';
+      
+      roles.forEach(role => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>
+            <input type="checkbox" class="role-checkbox" value="${role.id}" onclick="toggleRoleSelection('${role.id}', event)">
+          </td>
+          <td>${role.id}</td>
+          <td>${role.name}</td>
+          <td>
+            <div class="actions">
+              <button class="action-btn edit" onclick="openRoleForm('${role.id}')">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="action-btn delete" onclick="showDeleteConfirmation('${role.id}')">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </td>
+        `;
+        tableBody.appendChild(row);
+      });
+      
+      // تحديث معلومات الترقيم
+      updatePaginationInfo();
+      
+      // تحديث حالة خانة تحديد الكل
+      updateSelectAllCheckbox();
+    }
+
+    // ==========================
+    // تحديث معلومات الترقيم
+    // ==========================
+    function updatePaginationInfo() {
+      const totalRecords = roles.length;
+      document.getElementById('totalRecords').textContent = totalRecords;
+      document.getElementById('currentRange').textContent = `1-${totalRecords}`;
+    }
+
+    // ==========================
+    // فتح نموذج الصلاحية
+    // ==========================
+    function openRoleForm(roleId = null) {
+      currentRoleID = roleId;
+      
+      if (roleId) {
+        // تحرير صلاحية موجودة
+        const role = roles.find(r => r.id === roleId);
+        if (!role) return;
+        
+        document.getElementById('roleFormTitle').textContent = 'تعديل الصلاحية';
+        document.getElementById('roleName').value = role.name;
+      } else {
+        // إضافة صلاحية جديدة
+        document.getElementById('roleFormTitle').textContent = 'اضافة صلاحيه';
+        document.getElementById('roleName').value = '';
+      }
+      
+      // عرض النموذج
+      document.getElementById('roleFormOverlay').style.display = 'flex';
+      setTimeout(() => {
+        document.getElementById('roleFormOverlay').classList.add('show');
+      }, 10);
+      
+      // ملء قسم الصلاحيات
+      setTimeout(renderPermissionsGrid, 300);
+    }
+
+    // ==========================
+    // إغلاق نموذج الصلاحية
+    // ==========================
+    function closeRoleForm() {
+      const overlay = document.getElementById('roleFormOverlay');
+      overlay.classList.remove('show');
+      
+      setTimeout(() => {
+        overlay.style.display = 'none';
+      }, 300);
+    }
+
+    // ==========================
+    // تغيير فئة الصلاحيات
+    // ==========================
+    function changePermissionCategory(category) {
+      currentCategory = category;
+      
+      // تحديث أزرار الفئات
+      document.querySelectorAll('.category-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      document.querySelector(`.category-btn[data-category="${category}"]`).classList.add('active');
+      
+      // تحديث عرض الصلاحيات
+      renderPermissionsGrid();
+    }
+
+    // ==========================
+    // بحث في الصلاحيات
+    // ==========================
+    document.getElementById('searchPermissions').addEventListener('keyup', function() {
+      renderPermissionsGrid();
+    });
+
+    // ==========================
+    // عرض شبكة الصلاحيات
+    // ==========================
+    function renderPermissionsGrid() {
+      const permissionsGrid = document.getElementById('permissionsGrid');
+      permissionsGrid.innerHTML = '';
+      
+      const searchTerm = document.getElementById('searchPermissions').value.toLowerCase();
+      
+      permissionsData.forEach(category => {
+        // إذا كانت الفئة المطلوبة هي "الكل" أو تطابق الفئة الحالية
+        if (currentCategory === 'all' || currentCategory === category.id) {
+          // تصفية الصلاحيات حسب مصطلح البحث
+          const filteredPermissions = category.permissions.filter(permission => 
+            permission.name.toLowerCase().includes(searchTerm)
+          );
+          
+          if (filteredPermissions.length > 0) {
+            const categoryDiv = document.createElement('div');
+            categoryDiv.className = 'permission-card';
+            
+            categoryDiv.innerHTML = `
+              <h4>${category.name}</h4>
+              <div class="permission-options">
+                ${filteredPermissions.map(permission => `
+                  <div class="permission-option">
+                    <input type="checkbox" id="permission-${permission.id}" value="${permission.id}">
+                    <label for="permission-${permission.id}">${permission.name}</label>
+                  </div>
+                `).join('')}
+              </div>
+            `;
+            
+            permissionsGrid.appendChild(categoryDiv);
+          }
+        }
+      });
+      
+      // إذا كانت هناك صلاحية مفتوحة للتعديل، تحديث القيم
+      if (currentRoleID) {
+        const role = roles.find(r => r.id === currentRoleID);
+        if (role) {
+          permissionsData.forEach(category => {
+            category.permissions.forEach(permission => {
+              const checkbox = document.getElementById(`permission-${permission.id}`);
+              if (checkbox) {
+                checkbox.checked = role.permissions[permission.id] || false;
+              }
+            });
+          });
+        }
+      }
+    }
+
+    // ==========================
+    // حفظ الصلاحية
+    // ==========================
+    function saveRole() {
+      const name = document.getElementById('roleName').value.trim();
+      
+      // التحقق من تعبئة الحقول المطلوبة
+      if (!name) {
+        showToast('يرجى إدخال اسم الصلاحية', 'error');
+        return;
+      }
+      
+      // جمع الصلاحيات
+      const permissions = {};
+      permissionsData.forEach(category => {
+        category.permissions.forEach(permission => {
+          const checkbox = document.getElementById(`permission-${permission.id}`);
+          permissions[permission.id] = checkbox ? checkbox.checked : false;
+        });
+      });
+      
+      if (currentRoleID) {
+        // تحديث صلاحية موجودة
+        const index = roles.findIndex(r => r.id === currentRoleID);
+        if (index !== -1) {
+          roles[index] = {
+            ...roles[index],
+            name,
+            permissions
+          };
+          
+          showToast('تم تحديث الصلاحية بنجاح', 'success');
+        }
+      } else {
+        // إضافة صلاحية جديدة
+        const newId = (roles.length > 0 ? Math.max(...roles.map(r => parseInt(r.id))) + 1 : 1).toString();
+        
+        const newRole = {
+          id: newId,
+          name,
+          permissions
+        };
+        
+        roles.push(newRole);
+        showToast('تم إضافة الصلاحية بنجاح', 'success');
+      }
+      
+      // حفظ البيانات
+      localStorage.setItem('roles', JSON.stringify(roles));
+      
+      // تحديث واجهة المستخدم
+      renderRolesTable();
+      closeRoleForm();
+    }
+
+    // ==========================
+    // عرض تأكيد الحذف
+    // ==========================
+    function showDeleteConfirmation(roleId) {
+      currentRoleID = roleId;
+      currentAction = 'delete';
+      
+      document.getElementById('confirmationTitle').textContent = 'هل أنت متأكد؟';
+      document.getElementById('confirmationText').textContent = 'لن تستطيع التراجع عن هذا الإجراء لاحقًا';
+      document.getElementById('confirmActionBtn').textContent = 'نعم، احذف هذه الصلاحية';
+      
+      document.getElementById('confirmationModal').style.display = 'flex';
+      setTimeout(() => {
+        document.getElementById('confirmationModal').classList.add('show');
+      }, 10);
+    }
+
+    // ==========================
+    // عرض تأكيد الحذف الجماعي
+    // ==========================
+    function showBulkDeleteConfirmation() {
+      currentAction = 'bulk-delete';
+      
+      document.getElementById('confirmationTitle').textContent = 'هل أنت متأكد؟';
+      document.getElementById('confirmationText').textContent = `سيتم حذف ${selectedRoles.length} صلاحية. لن تستطيع التراجع عن هذا الإجراء لاحقًا`;
+      document.getElementById('confirmActionBtn').textContent = `نعم، احذف ${selectedRoles.length} صلاحية`;
+      
+      document.getElementById('confirmationModal').style.display = 'flex';
+      setTimeout(() => {
+        document.getElementById('confirmationModal').classList.add('show');
+      }, 10);
+    }
+
+    // ==========================
+    // إخفاء تأكيد الحذف
+    // ==========================
+    function hideConfirmation() {
+      const modal = document.getElementById('confirmationModal');
+      modal.classList.remove('show');
+      
+      setTimeout(() => {
+        modal.style.display = 'none';
+      }, 300);
+    }
+
+    // ==========================
+    // تأكيد حذف الصلاحية
+    // ==========================
+    function confirmDeleteRole() {
+      if (currentAction === 'delete' && currentRoleID) {
+        // العثور على الصلاحية وحذفها
+        roles = roles.filter(role => role.id !== currentRoleID);
+        
+        // حفظ البيانات
+        localStorage.setItem('roles', JSON.stringify(roles));
+        
+        // تحديث واجهة المستخدم
+        renderRolesTable();
+        hideConfirmation();
+        
+        // إظهار رسالة نجاح
+        showToast('تم حذف الصلاحية بنجاح', 'success');
+      } else if (currentAction === 'bulk-delete') {
+        // حذف الصلاحيات المحددة
+        roles = roles.filter(role => !selectedRoles.includes(role.id));
+        
+        // مسح التحديدات
+        selectedRoles = [];
+        
+        // تحديث عرض التحديدات
+        updateBulkActionsVisibility();
+        updateSelectAllCheckbox();
+        
+        // حفظ البيانات
+        localStorage.setItem('roles', JSON.stringify(roles));
+        
+        // تحديث واجهة المستخدم
+        renderRolesTable();
+        hideConfirmation();
+        
+        // إظهار رسالة نجاح
+        showToast(`تم حذف ${selectedRoles.length} صلاحية بنجاح`, 'success');
+      }
+    }
+
+    // ==========================
+    // تحديد/إلغاء تحديد جميع الصلاحيات
+    // ==========================
+    function toggleAllPermissions(checked) {
+      permissionsData.forEach(category => {
+        category.permissions.forEach(permission => {
+          const checkbox = document.getElementById(`permission-${permission.id}`);
+          if (checkbox) {
+            checkbox.checked = checked;
+          }
+        });
+      });
+    }
+
+    // ==========================
+    // تحديد/إلغاء تحديد جميع الصفوف
+    // ==========================
+    function toggleSelectAllRoles() {
+      const selectAll = document.getElementById('selectAllRoles').checked;
+      const checkboxes = document.querySelectorAll('.role-checkbox');
+      
+      selectedRoles = [];
+      
+      checkboxes.forEach(checkbox => {
+        checkbox.checked = selectAll;
+        if (selectAll) {
+          selectedRoles.push(checkbox.value);
+        }
+      });
+      
+      updateBulkActionsVisibility();
+      document.getElementById('selectedCount').textContent = selectedRoles.length;
+    }
+
+    // ==========================
+    // تحديث عرض أزرار الإجراءات الجماعية
+    // ==========================
+    function updateBulkActionsVisibility() {
+      const bulkActions = document.querySelector('.bulk-actions');
+      bulkActions.style.display = selectedRoles.length > 0 ? 'flex' : 'none';
+    }
+
+    // ==========================
+    // تحديث حالة خانة تحديد الكل
+    // ==========================
+    function updateSelectAllCheckbox() {
+      const checkboxes = document.querySelectorAll('.role-checkbox');
+      const selectAllCheckbox = document.getElementById('selectAllRoles');
+      
+      if (checkboxes.length === 0) {
+        selectAllCheckbox.checked = false;
+        selectAllCheckbox.indeterminate = false;
+        return;
+      }
+      
+      const checkedCount = document.querySelectorAll('.role-checkbox:checked').length;
+      
+      if (checkedCount === 0) {
+        selectAllCheckbox.checked = false;
+        selectAllCheckbox.indeterminate = false;
+      } else if (checkedCount === checkboxes.length) {
+        selectAllCheckbox.checked = true;
+        selectAllCheckbox.indeterminate = false;
+      } else {
+        selectAllCheckbox.checked = false;
+        selectAllCheckbox.indeterminate = true;
+      }
+    }
+
+    // ==========================
+    // تحديد صلاحية فردية
+    // ==========================
+    function toggleRoleSelection(roleId, event) {
+      if (event.target.checked) {
+        if (!selectedRoles.includes(roleId)) {
+          selectedRoles.push(roleId);
+        }
+      } else {
+        selectedRoles = selectedRoles.filter(id => id !== roleId);
+      }
+      
+      document.getElementById('selectedCount').textContent = selectedRoles.length;
+      updateBulkActionsVisibility();
+      updateSelectAllCheckbox();
+    }
+
+    // ==========================
+    // حذف الصلاحيات المحددة
+    // ==========================
+    function bulkDeleteRoles() {
+      if (selectedRoles.length === 0) {
+        showToast('يرجى تحديد صلاحيات لحذفها', 'warning');
+        return;
+      }
+      
+      showBulkDeleteConfirmation();
+    }
+
+    // ==========================
+    // تبديل اللغة
+    // ==========================
+    function toggleLanguage() {
+      const isArabic = document.documentElement.lang === 'ar';
+      const newLang = isArabic ? 'en' : 'ar';
+      
+      // تحديث لغة الصفحة
+      document.documentElement.lang = newLang;
+      
+      // تحديث النصوص
+      if (newLang === 'en') {
+        document.querySelector('.page-title').textContent = 'Roles';
+        document.querySelectorAll('th')[0].textContent = '';
+        document.querySelectorAll('th')[1].textContent = 'ID';
+        document.querySelectorAll('th')[2].textContent = 'Name';
+        document.querySelectorAll('th')[3].textContent = 'Actions';
+        
+        document.getElementById('searchRoles').placeholder = 'Search roles...';
+        document.querySelector('.btn').innerHTML = '<i class="fas fa-plus"></i> Add Role';
+        document.getElementById('roleFormTitle').textContent = 'Add Role';
+        document.getElementById('roleName').placeholder = 'Enter role name';
+        
+        // تحديث أسماء أقسام الصلاحيات
+        document.querySelector('.permission-categories .category-btn[data-category="all"]').textContent = 'All';
+        document.querySelector('.permission-categories .category-btn[data-category="workers"]').textContent = 'Workers';
+        document.querySelector('.permission-categories .category-btn[data-category="accommodation"]').textContent = 'Accommodation';
+        document.querySelector('.permission-categories .category-btn[data-category="activity"]').textContent = 'Activity Log';
+        document.querySelector('.permission-categories .category-btn[data-category="airports"]').textContent = 'Airports';
+        document.querySelector('.permission-categories .category-btn[data-category="contracts"]').textContent = 'Contracts';
+        document.querySelector('.permission-categories .category-btn[data-category="reports"]').textContent = 'Reports';
+        
+        // تحديث أسماء الصلاحيات
+        document.querySelector('.empty-state h3').textContent = 'No Roles';
+        document.querySelector('.empty-state p').textContent = 'No roles have been created yet. You can create a new role by clicking the button below';
+        document.querySelector('.btn').innerHTML = '<i class="fas fa-plus"></i> Create New Role';
+        
+        // تحديث أزرار الإجراءات الجماعية
+        document.querySelector('.bulk-actions .btn:nth-child(2)').innerHTML = '<i class="fas fa-check-square"></i> Select All';
+        document.querySelector('.bulk-actions .btn:nth-child(3)').innerHTML = '<i class="fas fa-square"></i> Deselect All';
+        document.querySelector('.bulk-actions .btn.danger').innerHTML = '<i class="fas fa-trash"></i> Delete Selected';
+      } else {
+        document.querySelector('.page-title').textContent = 'قائمة الصلاحيات';
+        document.querySelectorAll('th')[0].textContent = '';
+        document.querySelectorAll('th')[1].textContent = 'الرقم';
+        document.querySelectorAll('th')[2].textContent = 'الاسم';
+        document.querySelectorAll('th')[3].textContent = 'الأمر';
+        
+        document.getElementById('searchRoles').placeholder = 'ابحث في الصلاحيات...';
+        document.querySelector('.btn').innerHTML = '<i class="fas fa-plus"></i> اضافة صلاحيه';
+        document.getElementById('roleFormTitle').textContent = 'اضافة صلاحيه';
+        document.getElementById('roleName').placeholder = 'ادخل الاسم';
+        
+        // تحديث أسماء أقسام الصلاحيات
+        document.querySelector('.permission-categories .category-btn[data-category="all"]').textContent = 'الكل';
+        document.querySelector('.permission-categories .category-btn[data-category="workers"]').textContent = 'العاملين';
+        document.querySelector('.permission-categories .category-btn[data-category="accommodation"]').textContent = 'الإيواء';
+        document.querySelector('.permission-categories .category-btn[data-category="activity"]').textContent = 'سجل النشاط';
+        document.querySelector('.permission-categories .category-btn[data-category="airports"]').textContent = 'المطارات';
+        document.querySelector('.permission-categories .category-btn[data-category="contracts"]').textContent = 'العقود';
+        document.querySelector('.permission-categories .category-btn[data-category="reports"]').textContent = 'التقارير';
+        
+        // تحديث أسماء الصلاحيات
+        document.querySelector('.empty-state h3').textContent = 'لا توجد صلاحيات';
+        document.querySelector('.empty-state p').textContent = 'لم يتم إنشاء أي صلاحيات بعد. يمكنك إنشاء صلاحية جديدة بالنقر على الزر أدناه';
+        document.querySelector('.btn').innerHTML = '<i class="fas fa-plus"></i> اضافة صلاحيه';
+        
+        // تحديث أزرار الإجراءات الجماعية
+        document.querySelector('.bulk-actions .btn:nth-child(2)').innerHTML = '<i class="fas fa-check-square"></i> تفعيل الكل';
+        document.querySelector('.bulk-actions .btn:nth-child(3)').innerHTML = '<i class="fas fa-square"></i> إلغاء التحديد';
+        document.querySelector('.bulk-actions .btn.danger').innerHTML = '<i class="fas fa-trash"></i> حذف المحدد';
+      }
+      
+      // تحديث زر اللغة
+      const langBtn = document.querySelector('a[href="#"][onclick*="toggleLanguage"]');
+      langBtn.innerHTML = newLang === 'en' ? 
+        '<i class="fas fa-globe"></i> • عربي' : 
+        '<i class="fas fa-globe"></i> • English';
+    }
+
+    // ==========================
+    // عند تحميل الصفحة
+    // ==========================
+    document.addEventListener("DOMContentLoaded", function () {
+      // تحميل تفضيل اللغة المحفوظة
+      const savedLang = localStorage.getItem('appLanguage');
+      if (savedLang && (savedLang === 'ar' || savedLang === 'en')) {
+        document.documentElement.lang = savedLang;
+      }
+      
+      // تحديث واجهة المستخدم حسب اللغة
+      if (document.documentElement.lang === 'en') {
+        toggleLanguage(); // لتفعيل الوضع الإنجليزي
+        toggleLanguage(); // لاستعادة الوضع العربي (لتحديث النصوص فقط)
+      }
+    });
+  </script>
+</body>
+</html>
+<link rel="stylesheet" href="index.html">

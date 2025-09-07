@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>تسجيل الدخول - الفارس العالمي</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: #f5f6fa;
+      font-family: 'Cairo', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      width: 80%;
+      max-width: 600px;
+      height: 400px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      display: flex;
+      overflow: hidden;
+    }
+    .left {
+      flex: 1;
+      padding: 40px;
+      text-align: center;
+    }
+    .right {
+      flex: 1;
+      background: #f8f9fa;
+      padding: 40px;
+      text-align: right;
+    }
+    h1 {
+      font-size: 1.8rem;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      margin-bottom: 15px;
+      direction: rtl;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #1976D2;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #1565C0;
+    }
+    .features {
+      margin-top: 20px;
+      font-size: 0.9rem;
+      color: #666;
+    }
+    .features li {
+      margin: 8px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="left">
+      <h1>تسجيل الدخول</h1>
+      <form id="loginForm">
+        <input type="text" id="username" placeholder="اسم المستخدم" required>
+        <input type="password" id="password" placeholder="كلمة المرور" required>
+        <button type="submit">دخول</button>
+      </form>
+    </div>
+    <div class="right">
+      <h2>برنامج الفارس العالمي</h2>
+      <ul class="features">
+        <li>لمكاتب الاستقدام</li>
+        <li>واجهة مميزة وخفيفة</li>
+        <li>تقارير</li>
+        <li>إيواء</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault(); // منع إعادة تحميل الصفحة
+
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      // التحقق من البيانات (ولا يحتاج لقاعدة بيانات)
+      if (
+        (username === "muhmmad" && password === "muh123") ||
+        (username === "jafar" && password === "jaf1010") ||
+        (username === "sar" && password === "sarh2020")
+      ) {
+        // الانتقال إلى لوحة التحكم
+        window.location.href = "index.html";
+      } else {
+        // عرض رسالة خطأ
+        alert("اسم المستخدم أو كلمة المرور غير صحيحة");
+      }
+    });
+  </script>
+
+</body>
+</html>
+
+

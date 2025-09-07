@@ -1,0 +1,17 @@
+/* العاملين */
+.workers-card { 
+  background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%); 
+}
+.workers-card::before { background: #3498db; }
+
+/* طلب التأجير */
+.rental-request-card { 
+  background: linear-gradient(135deg, #8e44ad 0%, #793a93 100%); 
+}
+.rental-request-card::before { background: #9b59b6; }
+
+/* طلبات التأجير المنتهية */
+.completed-rentals-card { 
+  background: linear-gradient(135deg, #f39c12 0%, #d6891d 100%); 
+}
+.completed-rentals-card::before { background: #f1c40f; }
